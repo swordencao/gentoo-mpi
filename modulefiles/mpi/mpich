@@ -1,0 +1,18 @@
+#%Module
+
+conflict openmpi mvapich2 mpich mpich2
+
+set root /opt/apps/mpich
+
+# set paths
+prepend-path    CPATH    $root/include
+prepend-path    LD_LIBRARY_PATH    $root/lib
+prepend-path    LIBRARY_PATH    $root/lib
+prepend-path    MANPATH    $root/share/man
+prepend-path    PATH    $root/bin
+prepend-path    PKG_CONFIG_PATH    $root/lib/pkgconfig
+
+# set other variables
+setenv    CC    mpicc 
+setenv    CXX    mpicxx 
+setenv    FC    mpifort
