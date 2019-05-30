@@ -11,8 +11,3 @@ prepend-path    LIBRARY_PATH    $root/lib
 prepend-path    MANPATH    $root/share/man
 prepend-path    PATH    $root/bin
 prepend-path    PKG_CONFIG_PATH    $root/lib/pkgconfig
-
-# set other variables
-setenv    CC    mpicc
-setenv    CXX    mpicxx
-setenv    F77    mpif77
