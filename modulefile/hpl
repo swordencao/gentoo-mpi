@@ -2,6 +2,7 @@
 
 set root /usr/lib/hpl
 
+# TODO: maitain an environment variable for MPI-based software
 # TODO: return error to eselect files
 if { ! [info exists env(MPIHOME)] } {
   puts stderr "Need to load an MPI module first"
