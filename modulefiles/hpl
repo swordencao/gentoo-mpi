@@ -1,0 +1,15 @@
+#%Module
+
+set root /usr/lib/hpl
+
+# TODO: return error to eselect files
+if { ! [info exists env(MPIHOME)] } {
+  puts stderr "Need to load an MPI module first"
+  exit 1
+}
+
+# set paths
+prepend-path    LD_LIBRARY_PATH    $root/lib
+prepend-path    LIBRARY_PATH    $root/lib
+prepend-path    PATH    $root/bin
+prepend-path    PKG_CONFIG_PATH    $root/lib/pkgconfig
