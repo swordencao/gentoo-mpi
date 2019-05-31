@@ -1,8 +1,8 @@
 #%Module
 
-set root /usr/lib/hpl
+set mpi_package hpl
+set root /usr/lib/$mpi_package
 
-# TODO: maitain an environment variable for MPI-based software
 # TODO: return error to eselect files
 if { ! [info exists env(MPIHOME)] } {
   puts stderr "Need to load an MPI module first"
@@ -10,6 +10,7 @@ if { ! [info exists env(MPIHOME)] } {
 }
 
 # set paths
+prepend-path    MPI_PACKAGES    $mpi_package
 prepend-path    LD_LIBRARY_PATH    $root/lib
 prepend-path    LIBRARY_PATH    $root/lib
 prepend-path    PATH    $root/bin
