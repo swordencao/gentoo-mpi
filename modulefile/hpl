@@ -4,7 +4,7 @@ set mpi_package hpl
 set root /usr/lib/$mpi_package
 
 # TODO: return error to eselect files
-if { ! [info exists env(MPIHOME)] } {
+if { ! [ info exists env(MPIHOME) ] } {
   puts stderr "Need to load an MPI module first"
   exit 1
 }
