@@ -1,4 +1,5 @@
 #%Module
+# hpl module depends on openmpi
 
 set mpi_package hpl
 set root /usr/lib/$mpi_package
