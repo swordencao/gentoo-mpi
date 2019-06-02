@@ -2,7 +2,7 @@
 # hpl module depends on openmpi
 
 set mpi_package hpl
-set root /usr/lib/$mpi_package
+set root /usr/lib/mpi/openmpi/$mpi_package
 
 # TODO: return error to eselect files
 if { ! [ info exists env(MPIHOME) ] } {
