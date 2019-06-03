@@ -6,6 +6,7 @@ cd $(dirname "$0")
 # update modulefiles
 mkdir -p /etc/modulefiles/mpi
 cp -f modulefile/mpi/* /etc/modulefiles/mpi
+# TODO: need to consider furter, what if two MPI-based hpl packages happens here?
 cp -fr modulefile/hpl /etc/modulefiles/hpl
 cp -f modulespath /usr/share/Modules/init/.modulespath
 
