@@ -24,7 +24,9 @@ module_load() {
         target=${targets[target-1]}
     fi
 
-	module load mpi/${target} || die -q "Couldn't load module ${target}"
+    #module load mpi/${target} || die -q "Couldn't load module ${target}"
+    /usr/share/Modules/bin/modulecmd bash load mpi/${target} \
+        || die -q "Couldn't load module ${target}"
 }
 
 ### list action
@@ -62,11 +64,13 @@ describe_set_options() {
 do_set() {
     local targets=( $(find_targets) )
     [[ $# -eq 1 ]] || die -q "Please specify exactly one package to activate!"
-    if [[ ${targets[@]} =~ "${MPIHOME}" ]]; then
-	# TODO: not working, don't use eval
- 		module unload mpi/openmpi \
+    if [ ! -z "${MPIHOME}"] && [[ ${targets[@]} =~ "${MPIHOME}" ]]; then
+        #module unload mpi/${MPIHOME} \
+        echo "unloading mpi/${MPIHOME}"
+        /usr/share/Modules/bin/modulecmd bash unload mpi/${MPIHOME} \
         	|| die -q "Couldn't unload previous module"
 	fi
+    echo "loading $1"
     module_load $1
 }
 
