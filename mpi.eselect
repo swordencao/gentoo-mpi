@@ -1,0 +1,60 @@
+# -*-eselect-*-  vim: ft=eselect
+# Copyright 2005-2019 Gentoo Authors
+# Distributed under the terms of the GNU GPL version 2 or later
+
+DESCRIPTION="Manage installed versions of MPI packages"
+MAINTAINER="sworden.cao@gmail.com"
+
+### find a list of MPI targets
+find_targets() {
+    local f
+    for f in "${EROOT}"/etc/modulefiles/mpi/*; do
+        [[ -f ${f} ]] && basename "${f}"
+    done
+}
+
+### list action
+
+describe_list() {
+    echo "List all installed version of MPI packages"
+}
+
+do_list() {
+    local i targets=( $(find_targets))
+
+    write_list_start "Available MPI targets:"
+    for (( i = 0; i < ${#targets[@]}; i++ )); do
+        # highlight the target where the MPIHOME is pointing to
+        [[ ${targets[i]} = $(basename "${MPIHOME}") ]] \
+            && targets[i]=$(highlight_marker "${targets[i]}")
+    done
+    write_numbered_list -m "(none found)" "${targets[@]}"
+}
+
+### set action
+
+describe_set() {
+    echo "Activate one of the installed MPI packages"
+}
+
+describe_set_parameters() {
+    echo "<target>"
+}
+
+describe_set_options() {
+    echo "target : Target name or number (from 'list' action)"
+}
+
+do_set() {
+    [[ $# -eq 1 ]] || die -q "Please specify exactly one package to activate!"
+}
+
+### show action
+
+describe_show() {
+    echo "Print the currently active MPI version"
+}
+
+do_show() {
+    echo "show"
+}
