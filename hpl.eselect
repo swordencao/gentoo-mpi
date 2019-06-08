@@ -6,6 +6,7 @@ DESCRIPTION="Manage installed versions of sys-cluster/hpl package"
 MAINTAINER="sworden.cao@gmail.com"
 
 ### find a list of hpl target
+# TODO: solve dependence
 
 find_targets() {
     local f
