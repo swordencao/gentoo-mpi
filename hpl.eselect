@@ -75,6 +75,23 @@ do_set() {
     module_load $1
 }
 
+### none action
+
+describe_none() {
+    echo "Inactive all HPL targets"
+}
+
+do_none() {
+    local i targets=( $(find_targets) )
+
+    for (( i = 0; i < ${#targets[@]}; i++ )); do
+        #module unload hpl/${MPIHOME} \
+        echo "unloading hpl/${MPIHOME}"
+        /usr/share/Modules/bin/modulecmd bash unload hpl/${MPIHOME} \
+            || die -q "Couldn't unload previous module"
+    done
+}
+
 ### show action
 
 describe_show() {
