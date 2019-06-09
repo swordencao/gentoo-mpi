@@ -74,6 +74,23 @@ do_set() {
     module_load $1
 }
 
+### set action
+
+describe_none() {
+    echo "Inactive all MPI targets"
+}
+
+do_none() {
+    local i targets=( $(find_targets) )
+
+    for (( i = 0; i < ${#targets[@]}; i++ )); do
+        #module unload mpi/${MPIHOME} \
+        echo "unloading mpi/${MPIHOME}"
+        /usr/share/Modules/bin/modulecmd bash unload mpi/${MPIHOME} \
+            || die -q "Couldn't unload previous module"
+    done
+}
+
 ### show action
 
 describe_show() {
