@@ -3,9 +3,9 @@
 
 # @ECLASS: mpi.eclass
 # @MAINTAINER:
-# root
+# Jian Cao <sworden.cao@gmail.com>
 # @AUTHOR:
-# root
+# Jian Cao <sworden.cao@gmail.com>
 # @BLURB: 
 # @DESCRIPTION:
 
