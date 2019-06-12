@@ -11,3 +11,17 @@
 # An eclass depends on Modules, provides interfaces to ebuilds,
 # change ${EPREFIX} for MPI or MPI-based packages, depending on
 # package type, keywords, package name and version number.
+
+DEPEND=">=sys-cluster/modules-3.2.9c-r1"
+
+# @FUNCTION: mpi-create-module
+# @USAGE: [additional-args]
+# @DESCRIPTION:
+# Create an MPI module file.
+mpi-create-module() {
+	# TODO: check dir existence.
+	mkdir -p /etc/modulefiles/mpi
+	insinto /etc/modulefiles/mpi
+	doins $1
+	# TODO: restore installation location?
+}
