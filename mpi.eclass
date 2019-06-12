@@ -25,3 +25,15 @@ mpi-create-module() {
 	doins $1
 	# TODO: restore installation location?
 }
+
+# @FUNCTION: package-create-module
+# @USAGE: [additional-args]
+# @DESCRIPTION:
+# Create an MPI-based package module file.
+package-create-module() {
+	# TODO: check dir existence.
+	mkdir -p /etc/modulefiles/$1/$2
+	insinto /etc/modulefiles/$1/$2
+	doins $1
+	# TODO: restore installation location?
+}
