@@ -19,6 +19,12 @@ RDEPEND="${DEPEND}"
 BDEPEND=""
 
 src_install() {
+	mkdir -p /etc/modulefiles/mpi
+	dodir "${FILESDIR}"/modulefile/mpi /etc/modulefiles/mpi
+	dodir "${FILESDIR}"/modulefile/hpl /etc/modulefiles/hpl
+	insinto /usr/share/Modules/init
+	newins "${FILESDIR}"/modulespath .modulespath
 	insinto /usr/share/eselect/modules
 	doins "${FILESDIR}"/mpi.eselect
+	doins "${FILESDIR}"/hpl.eselect
 }
