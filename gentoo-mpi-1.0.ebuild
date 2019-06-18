@@ -6,10 +6,10 @@ EAPI=7
 inherit eutils
 
 DESCRIPTION="A framework supports for multiple MPI implementations"
-HOMEPAGE=""
+HOMEPAGE="https://github.com/swordencao/gentoo-mpi"
 SRC_URI=""
 
-LICENSE=""
+LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE=""

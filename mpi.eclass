@@ -37,3 +37,11 @@ package-create-module() {
 	doins $1
 	# TODO: restore installation location?
 }
+
+# @FUNCTION: package-create-module
+# @USAGE: [additional-args]
+# @DESCRIPTION:
+# Return the base MPI location for installation
+mpi_dir() {
+	return "${ED}/usr/$(get_libdir)/mpi"
+}
