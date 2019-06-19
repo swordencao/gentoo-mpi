@@ -38,10 +38,21 @@ package-create-module() {
 	# TODO: restore installation location?
 }
 
-# @FUNCTION: package-create-module
+# @FUNCTION: mpi_dir
 # @USAGE: [additional-args]
 # @DESCRIPTION:
 # Return the base MPI location for installation
 mpi_dir() {
-	return "${ED}/usr/$(get_libdir)/mpi"
+	return "/usr/$(get_libdir)/mpi"
+}
+
+# @FUNCTION: mpi_install_eselect
+# @USAGE: [additional-args]
+# @DESCRIPTION:
+# Install eselect file for MPI packages
+mpi_install_eselect() {
+	local c=$(mpi_class)
+	[ -f "/usr/share/eselect/modules/mpi.eselect" ] && \
+		cp "${FILESDIR}"/mpi.eselect /usr/share/eselect/modules/mpi.eselect \
+			|| die
 }

@@ -107,6 +107,7 @@ multilib_src_configure() {
 		export ac_cv_path_JAVAC="$(java-pkg_get-javac) $(java-pkg_javac-args)"
 	fi
 
+	EPREFIX=${EPREFIX}$(mpi_dir)
 	ECONF_SOURCE=${S} econf \
 		--sysconfdir="${EPREFIX}/etc/${PN}" \
 		--enable-pretty-print-stacktrace \
@@ -174,6 +175,9 @@ multilib_src_install_all() {
 		# so let's clean after ourselves.
 		rm "${mpi_jar}" || die
 	fi
+
+	# install eselect file
+	$(mpi_install_eselect)
 
 	einstalldocs
 }
