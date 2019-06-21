@@ -5,7 +5,7 @@ EAPI=6
 
 FORTRAN_NEEDED=fortran
 
-inherit cuda flag-o-matic fortran-2 java-pkg-opt-2 toolchain-funcs versionator mpi multilib-minimal
+inherit cuda flag-o-matic fortran-2 java-pkg-opt-2 toolchain-funcs versionator multilib-minimal
 
 MY_P=${P/-mpi}
 S=${WORKDIR}/${MY_P}
@@ -32,7 +32,7 @@ HOMEPAGE="http://www.open-mpi.org"
 SRC_URI="http://www.open-mpi.org/software/ompi/v$(get_version_component_range 1-2)/downloads/${MY_P}.tar.bz2"
 LICENSE="BSD"
 SLOT="0"
-KEYWORDS="~alpha amd64 arm ~ia64 ~ppc ~ppc64 sparc x86 ~amd64-linux"
+KEYWORDS="~alpha ~amd64 ~arm ~ia64 ~ppc ~ppc64 ~sparc ~x86 ~amd64-linux"
 IUSE="cma cuda cxx elibc_FreeBSD fortran heterogeneous ipv6 java mpi-threads numa romio threads
 	${IUSE_OPENMPI_FABRICS} ${IUSE_OPENMPI_RM} ${IUSE_OPENMPI_OFED_FEATURES}"
 
@@ -107,7 +107,6 @@ multilib_src_configure() {
 		export ac_cv_path_JAVAC="$(java-pkg_get-javac) $(java-pkg_javac-args)"
 	fi
 
-	EPREFIX=${EPREFIX}$(mpi_dir)
 	ECONF_SOURCE=${S} econf \
 		--sysconfdir="${EPREFIX}/etc/${PN}" \
 		--enable-pretty-print-stacktrace \
@@ -175,9 +174,6 @@ multilib_src_install_all() {
 		# so let's clean after ourselves.
 		rm "${mpi_jar}" || die
 	fi
-
-	# install eselect file
-	$(mpi_install_eselect)
 
 	einstalldocs
 }
