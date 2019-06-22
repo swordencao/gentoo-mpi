@@ -51,8 +51,16 @@ mpi_dir() {
 # @DESCRIPTION:
 # Install eselect file for MPI packages
 mpi_install_eselect() {
-	local c=$(mpi_class)
 	[ -f "/usr/share/eselect/modules/mpi.eselect" ] && \
 		cp "${FILESDIR}"/mpi.eselect /usr/share/eselect/modules/mpi.eselect \
 			|| die
+}
+
+# @FUNCTION: mpi_process_modulefile
+# @USAGE: [openmpi/mpich/mpich2/mvapich2]
+# @DESCRIPTION:
+# Process modulefile for MPI packages
+mpi_process_modulefile() {
+	# sed for EPREFIX?
+	echo ""
 }

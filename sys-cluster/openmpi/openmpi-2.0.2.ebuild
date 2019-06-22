@@ -5,7 +5,7 @@ EAPI=6
 
 FORTRAN_NEEDED=fortran
 
-inherit cuda flag-o-matic fortran-2 java-pkg-opt-2 toolchain-funcs versionator multilib-minimal
+inherit cuda flag-o-matic fortran-2 java-pkg-opt-2 toolchain-funcs versionator mpi multilib-minimal
 
 MY_P=${P/-mpi}
 S=${WORKDIR}/${MY_P}
@@ -108,7 +108,7 @@ multilib_src_configure() {
 	fi
 
 	ECONF_SOURCE=${S} econf \
-		--sysconfdir="${EPREFIX}/etc/${PN}" \
+		--sysconfdir="${EPREFIX}$(mpi_dir)/etc/${PN}" \
 		--enable-pretty-print-stacktrace \
 		--enable-orterun-prefix-by-default \
 		--with-hwloc="${EPREFIX}/usr" \
@@ -174,6 +174,12 @@ multilib_src_install_all() {
 		# so let's clean after ourselves.
 		rm "${mpi_jar}" || die
 	fi
+
+	# install eselect file
+	mpi_install_eselect
+
+	# process modulefile
+	$(mpi_process_modulefile openmpi)
 
 	einstalldocs
 }
