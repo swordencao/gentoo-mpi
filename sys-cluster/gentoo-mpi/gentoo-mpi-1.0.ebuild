@@ -3,7 +3,7 @@
 
 EAPI=7
 
-inherit eutils mpi-provider
+inherit eutils
 
 DESCRIPTION="A framework supports for multiple MPI implementations"
 HOMEPAGE="https://github.com/swordencao/gentoo-mpi"
