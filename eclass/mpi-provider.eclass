@@ -20,8 +20,8 @@ DEPEND+=" sys-cluster/modules"
 # Create an MPI module file.
 mpi-create-module() {
 	# TODO: check dir existence.
-	mkdir -p /etc/modulefiles/mpi
-	insinto /etc/modulefiles/mpi
+	mkdir -p ${EPREFIX}/etc/modulefiles/mpi
+	insinto ${EPREFIX}/etc/modulefiles/mpi
 	doins $1
 	# TODO: restore installation location?
 }
@@ -32,8 +32,8 @@ mpi-create-module() {
 # Create an MPI-based package module file.
 package-create-module() {
 	# TODO: check dir existence.
-	mkdir -p /etc/modulefiles/$1/$2
-	insinto /etc/modulefiles/$1/$2
+	mkdir -p ${EPREFIX}/etc/modulefiles/$1/$2
+	insinto ${EPREFIX}/etc/modulefiles/$1/$2
 	doins $1
 	# TODO: restore installation location?
 }
@@ -43,7 +43,7 @@ package-create-module() {
 # @DESCRIPTION:
 # Return the base MPI location for installation
 mpi_dir() {
-	return "/usr/$(get_libdir)/mpi"
+	return "${EPREFIX}/usr/$(get_libdir)/mpi"
 }
 
 # @FUNCTION: mpi_process_modulefile
