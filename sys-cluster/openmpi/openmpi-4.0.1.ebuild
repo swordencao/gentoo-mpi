@@ -5,7 +5,7 @@ EAPI=7
 
 FORTRAN_NEEDED=fortran
 
-inherit cuda flag-o-matic fortran-2 java-pkg-opt-2 toolchain-funcs multilib multilib-minimal
+inherit cuda flag-o-matic fortran-2 java-pkg-opt-2 toolchain-funcs mpi-provider multilib multilib-minimal
 
 MY_P=${P/-mpi}
 S=${WORKDIR}/${MY_P}
@@ -27,10 +27,9 @@ IUSE_OPENMPI_OFED_FEATURES="
 
 DESCRIPTION="A high-performance message passing library (MPI)"
 HOMEPAGE="http://www.open-mpi.org"
-SRC_URI="http://www.open-mpi.org/software/ompi/v$(ver_cut 1-2)/downloads/${MY_P}.tar.bz2"
 LICENSE="BSD"
 SLOT="0"
-KEYWORDS="~alpha ~amd64 ~arm ~ia64 ~ppc ~ppc64 ~sparc ~x86 ~amd64-linux"
+KEYWORDS="~amd64 ~x86 ~amd64-linux ~x86-linux"
 IUSE="cma cuda cxx elibc_FreeBSD fortran heterogeneous ipv6 java romio
 	${IUSE_OPENMPI_FABRICS} ${IUSE_OPENMPI_RM} ${IUSE_OPENMPI_OFED_FEATURES}"
 
@@ -80,6 +79,9 @@ pkg_setup() {
 	elog "Don't forget the EXTRA_ECONF environment variable can let you"
 	elog "specify configure options if you find them necessary."
 	elog
+
+	# process modulefile
+	mpi_process_modulefile
 }
 
 src_prepare() {

@@ -12,7 +12,7 @@
 # change ${EPREFIX} for MPI or MPI-based packages, depending on
 # package type, keywords, package name and version number.
 
-DEPEND=">=sys-cluster/modules-3.2.9c-r1"
+DEPEND+=" sys-cluster/modules"
 
 # @FUNCTION: mpi-create-module
 # @USAGE: [additional-args]
@@ -57,7 +57,7 @@ mpi_install_eselect() {
 }
 
 # @FUNCTION: mpi_process_modulefile
-# @USAGE: [openmpi/mpich/mpich2/mvapich2]
+# @USAGE: [additional-args]
 # @DESCRIPTION:
 # Process modulefile for MPI packages
 mpi_process_modulefile() {
