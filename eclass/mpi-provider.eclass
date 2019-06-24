@@ -46,16 +46,6 @@ mpi_dir() {
 	return "/usr/$(get_libdir)/mpi"
 }
 
-# @FUNCTION: mpi_install_eselect
-# @USAGE: [additional-args]
-# @DESCRIPTION:
-# Install eselect file for MPI packages
-mpi_install_eselect() {
-	[ -f "/usr/share/eselect/modules/mpi.eselect" ] && \
-		cp "${FILESDIR}"/mpi.eselect /usr/share/eselect/modules/mpi.eselect \
-			|| die
-}
-
 # @FUNCTION: mpi_process_modulefile
 # @USAGE: [additional-args]
 # @DESCRIPTION:
