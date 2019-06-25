@@ -6,7 +6,7 @@ EAPI=6
 FORTRAN_NEEDED=fortran
 FORTRAN_STANDARD="77 90"
 
-inherit fortran-2 multilib-minimal multilib autotools
+inherit fortran-2 multilib-minimal multilib autotools mpi-provider
 
 MY_PV=${PV/_/}
 DESCRIPTION="A high performance and portable MPI implementation"
@@ -14,7 +14,7 @@ HOMEPAGE="http://www.mpich.org/"
 
 SLOT="0"
 LICENSE="mpich2"
-KEYWORDS="~amd64 ~arm64 ~hppa ~ppc ~ppc64 ~x86 ~amd64-linux ~x86-linux"
+KEYWORDS="~amd64  ~x86 ~amd64-linux ~x86-linux"
 IUSE="+cxx doc fortran mpi-threads romio threads"
 
 COMMON_DEPEND="
@@ -87,6 +87,8 @@ multilib_src_configure() {
 		c="${c} --enable-threads=single"
 	fi
 
+	# not all files, need to move them to dest dir
+	c="${c} --prefix=$(mpi_libdir)"
 	c="${c} --sysconfdir=${EPREFIX}/etc/${PN}"
 	c="${c} --docdir=${EPREFIX}/usr/share/doc/${PF}"
 

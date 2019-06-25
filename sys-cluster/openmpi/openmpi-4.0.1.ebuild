@@ -101,7 +101,9 @@ multilib_src_configure() {
 		export ac_cv_path_JAVAC="$(java-pkg_get-javac) $(java-pkg_javac-args)"
 	fi
 
+	# not install all files into prefix dir, to be moved
 	ECONF_SOURCE=${S} econf \
+		--prefix="$(mpi_libdir)" \
 		--sysconfdir="${EPREFIX}/etc/${PN}" \
 		--enable-pretty-print-stacktrace \
 		--enable-orterun-prefix-by-default \
