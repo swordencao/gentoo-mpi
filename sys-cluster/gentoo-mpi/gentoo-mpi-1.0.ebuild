@@ -25,9 +25,12 @@ src_install() {
 	doins "${FILESDIR}"/mpi.eselect
 	doins "${FILESDIR}"/hpl.eselect
 	# install modulefiles
-	dodir /etc/modulefiles/mpi
-	dodir "${FILESDIR}"/modulefile/mpi /etc/modulefiles/mpi
+	MPI_MODULEFILE="/etc/modulefiles/mpi"
+	dodir "${MPI_MODULEFILE}"
+	insinto "${MPI_MODULEFILE}"
+	doins "${FILESDIR}"/modulefile/mpi/*
 	#dodir "${FILESDIR}"/modulefile/hpl /etc/modulefiles/hpl
+	# configure modules
 	insinto /usr/share/Modules/init
 	newins "${FILESDIR}"/modulespath .modulespath
 }
