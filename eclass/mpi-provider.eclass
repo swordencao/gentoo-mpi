@@ -12,6 +12,8 @@
 # change ${EPREFIX} for MPI or MPI-based packages, depending on
 # package type, keywords, package name and version number.
 
+inherit multilib
+
 DEPEND+=" sys-cluster/modules"
 
 # @FUNCTION: mpi-create-module
@@ -38,19 +40,29 @@ package-create-module() {
 	# TODO: restore installation location?
 }
 
-# @FUNCTION: mpi_dir
+# @FUNCTION: mpi_incdir
 # @USAGE: [additional-args]
 # @DESCRIPTION:
-# Return the base MPI location for installation
-mpi_dir() {
-	return "${EPREFIX}/usr/$(get_libdir)/mpi"
+# Return the MPI header location for installation
+mpi_incdir() {
+	# dodir?
+	return "${EPREFIX}/usr/include/mpi/${PN}"
 }
 
-# @FUNCTION: mpi_process_modulefile
+# @FUNCTION: mpi_bindir
 # @USAGE: [additional-args]
 # @DESCRIPTION:
-# Process modulefile for MPI packages
-mpi_process_modulefile() {
-	# sed for EPREFIX?
-	echo ""
+# Return the MPI binary location for installation
+mpi_bindir() {
+	# dodir?
+	return "${EPREFIX}/usr/libexec/mpi/${PN}"
+}
+
+# @FUNCTION: mpi_libdir
+# @USAGE: [additional-args]
+# @DESCRIPTION:
+# Return the MPI libraries location for installation
+mpi_libdir() {
+	# dodir?
+	return "${EPREFIX}/usr/$(get_libdir)/mpi/${PN}"
 }
