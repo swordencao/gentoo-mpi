@@ -25,8 +25,7 @@ src_install() {
 	doins "${FILESDIR}"/mpi.eselect
 	doins "${FILESDIR}"/hpl.eselect
 	# install modulefiles
-	# TODO: PERMISSION DENIED by portage, workingaround for now
-	#mkdir -p ${EPREFIX}/etc/modulefiles/mpi
+	dodir /etc/modulefiles/mpi
 	dodir "${FILESDIR}"/modulefile/mpi /etc/modulefiles/mpi
 	#dodir "${FILESDIR}"/modulefile/hpl /etc/modulefiles/hpl
 	insinto /usr/share/Modules/init
