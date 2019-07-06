@@ -88,7 +88,13 @@ multilib_src_configure() {
 	fi
 
 	# not all files, need to move them to dest dir
-	c="${c} --prefix=$(mpi_libdir)"
+	#c="${c} --prefix=$(mpi_libdir)"
+	c="${c} --bindir=$(mpi_bindir)"
+	c="${c} --sbindir=$(mpi_bindir)"
+	c="${c} --libexecdir=$(mpi_bindir)"
+	c="${c} --libdir=$(mpi_libdir)"
+	c="${c} --includedir=$(mpi_incdir)"
+	c="${c} --oldincludedir=$(mpi_incdir)"
 	c="${c} --sysconfdir=${EPREFIX}/etc/${PN}"
 	c="${c} --docdir=${EPREFIX}/usr/share/doc/${PF}"
 

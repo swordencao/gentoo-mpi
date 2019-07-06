@@ -103,7 +103,13 @@ multilib_src_configure() {
 
 	# not install all files into prefix dir, to be moved
 	ECONF_SOURCE=${S} econf \
-		--prefix="$(mpi_libdir)" \
+		#--prefix="$(mpi_libdir)" \
+		--bindir="$(mpi_bindir)" \
+		--sbindir="$(mpi_bindir)" \
+		--libexecdir="$(mpi_bindir)" \
+		--libdir="$(mpi_libdir)" \
+		--includedir="$(mpi_incdir)" \
+		--oldincludedir="$(mpi_incdir)" \
 		--sysconfdir="${EPREFIX}/etc/${PN}" \
 		--enable-pretty-print-stacktrace \
 		--enable-orterun-prefix-by-default \
