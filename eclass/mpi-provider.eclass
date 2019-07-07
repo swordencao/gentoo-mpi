@@ -46,7 +46,7 @@ package-create-module() {
 # @DESCRIPTION:
 # Return the MPI header location for installation
 mpi_incdir() {
-	return "${EPREFIX}/usr/include/mpi/${PN}"
+	echo "${EPREFIX}/usr/include/mpi/${PN}"
 }
 
 # @FUNCTION: mpi_bindir
@@ -54,7 +54,7 @@ mpi_incdir() {
 # @DESCRIPTION:
 # Return the MPI binary location for installation
 mpi_bindir() {
-	return "${EPREFIX}/usr/libexec/mpi/${PN}"
+	echo "${EPREFIX}/usr/libexec/mpi/${PN}"
 }
 
 # @FUNCTION: mpi_libdir
@@ -63,5 +63,5 @@ mpi_bindir() {
 # Return the MPI libraries location for installation, which should be
 # used in multilib ported functions
 mpi_libdir() {
-	return "${EPREFIX}/usr/$(get_libdir)/mpi/${PN}"
+	echo "${EPREFIX}/usr/$(get_libdir)/mpi/${PN}"
 }
