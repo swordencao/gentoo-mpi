@@ -11,6 +11,7 @@ inherit fortran-2 multilib-minimal multilib autotools mpi-provider
 MY_PV=${PV/_/}
 DESCRIPTION="A high performance and portable MPI implementation"
 HOMEPAGE="http://www.mpich.org/"
+SRC_URI="http://www.mpich.org/static/downloads/${PV}/${P}.tar.gz"
 
 SLOT="0"
 LICENSE="mpich2"
