@@ -143,6 +143,11 @@ multilib_src_test() {
 }
 
 multilib_src_install() {
+	# create mpi related directories if they are not exist
+	dodir $(mpi_bindir)
+	dodir $(mpi_libdir)
+	dodir $(mpi_incdir)
+
 	default
 
 	# fortran header cannot be wrapped (bug #540508), workaround part 1
