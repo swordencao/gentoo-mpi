@@ -80,9 +80,6 @@ pkg_setup() {
 	elog "Don't forget the EXTRA_ECONF environment variable can let you"
 	elog "specify configure options if you find them necessary."
 	elog
-
-	# process modulefile
-	mpi_process_modulefile
 }
 
 src_prepare() {
@@ -153,12 +150,12 @@ multilib_src_install() {
 	# fortran header cannot be wrapped (bug #540508), workaround part 1
 	if multilib_is_native_abi && use fortran; then
 		mkdir "${T}"/fortran || die
-		mv "${ED}"/usr/include/mpif* "${T}"/fortran || die
+		mv "${ED}$(mpi_incdir)"/mpif* "${T}"/fortran || die
 	else
 		# some fortran files get installed unconditionally
 		rm \
-			"${ED}"/usr/include/mpif* \
-			"${ED}"/usr/bin/mpif* \
+			"${ED}$(mpi_incdir)"/mpif* \
+			"${ED}$(mpi_bindir)"/mpif* \
 			|| die
 	fi
 }
@@ -166,14 +163,14 @@ multilib_src_install() {
 multilib_src_install_all() {
 	# fortran header cannot be wrapped (bug #540508), workaround part 2
 	if use fortran; then
-		mv "${T}"/fortran/mpif* "${ED}"/usr/include || die
+		mv "${T}"/fortran/mpif* "${ED}$(mpi_incdir)" || die
 	fi
 
 	# Remove la files, no static libs are installed and we have pkg-config
 	find "${ED}" -name '*.la' -delete || die
 
 	if use java; then
-		local mpi_jar="${ED}"/usr/$(get_libdir)/mpi.jar
+		local mpi_jar="${ED}$(mpi_libdir)"/mpi.jar
 		java-pkg_dojar "${mpi_jar}"
 		# We don't want to install the jar file twice
 		# so let's clean after ourselves.
