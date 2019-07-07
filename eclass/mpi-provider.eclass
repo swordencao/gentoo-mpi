@@ -14,7 +14,8 @@
 
 inherit multilib
 
-DEPEND+=" sys-cluster/modules"
+# Redundate DEPEND of gentoo-mpi, should be added but error happens
+#DEPEND+=" sys-cluster/modules"
 
 # @FUNCTION: mpi-create-module
 # @USAGE: [additional-args]
