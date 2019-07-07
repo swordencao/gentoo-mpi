@@ -13,9 +13,11 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE=""
 
-DEPEND="app-admin/eselect"
-RDEPEND="${DEPEND}"
-BDEPEND=""
+COMMON_DEPEND="
+	sys-cluster/modules
+	app-admin/eselect"
+DEPEND="${COMMON_DEPEND}"
+RDEPEND="${COMMON_DEPEND}"
 
 S="${WORKDIR}"
 

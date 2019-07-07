@@ -42,6 +42,7 @@ REQUIRED_USE="openmpi_rm_slurm? ( !openmpi_rm_pbs )
 	openmpi_ofed_features_dynamic-sl? ( openmpi_fabrics_ofed )"
 
 CDEPEND="
+	sys-cluster/gentoo-mpi
 	!sys-cluster/mpich
 	!sys-cluster/mpich2
 	!sys-cluster/nullmpi

@@ -18,6 +18,7 @@ KEYWORDS="~amd64  ~x86 ~amd64-linux ~x86-linux"
 IUSE="+cxx doc fortran mpi-threads romio threads"
 
 COMMON_DEPEND="
+	sys-cluster/gentoo-mpi
 	>=dev-libs/libaio-0.3.109-r5[${MULTILIB_USEDEP}]
 	>=sys-apps/hwloc-2.0.2[${MULTILIB_USEDEP}]
 	romio? ( net-fs/nfs-utils )"
