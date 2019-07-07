@@ -30,15 +30,14 @@ DEPEND="${COMMON_DEPEND}
 
 RDEPEND="${COMMON_DEPEND}
 	!sys-cluster/mpich2
-	!sys-cluster/openmpi
 	!sys-cluster/nullmpi"
 
 S="${WORKDIR}"/${PN}-${MY_PV}
 
 MULTILIB_WRAPPED_HEADERS=(
-	/usr/include/mpicxx.h
-	/usr/include/mpi.h
-	/usr/include/opa_config.h
+	"$(mpi_incdir)"/mpicxx.h
+	"$(mpi_incdir)"/mpi.h
+	"$(mpi_incdir)"/opa_config.h
 )
 
 PATCHES=(
@@ -90,7 +89,6 @@ multilib_src_configure() {
 	fi
 
 	# not all files, need to move them to dest dir
-	#c="${c} --prefix=$(mpi_libdir)"
 	c="${c} --bindir=$(mpi_bindir)"
 	c="${c} --sbindir=$(mpi_bindir)"
 	c="${c} --libexecdir=$(mpi_bindir)"

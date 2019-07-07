@@ -44,7 +44,6 @@ REQUIRED_USE="openmpi_rm_slurm? ( !openmpi_rm_pbs )
 
 CDEPEND="
 	sys-cluster/gentoo-mpi
-	!sys-cluster/mpich
 	!sys-cluster/mpich2
 	!sys-cluster/nullmpi
 	!sys-cluster/mpiexec
@@ -68,8 +67,8 @@ DEPEND="${CDEPEND}
 	java? ( >=virtual/jdk-1.6 )"
 
 MULTILIB_WRAPPED_HEADERS=(
-	/usr/include/mpi.h
-	/usr/include/openmpi/ompi/mpi/java/mpiJava.h
+	"$(mpi_incdir)"/mpi.h
+	"$(mpi_incdir)"/openmpi/ompi/mpi/java/mpiJava.h
 )
 
 pkg_setup() {
@@ -105,7 +104,6 @@ multilib_src_configure() {
 
 	# not install all files into prefix dir, to be moved
 	ECONF_SOURCE=${S} econf \
-		#--prefix="$(mpi_libdir)" \
 		--bindir="$(mpi_bindir)" \
 		--sbindir="$(mpi_bindir)" \
 		--libexecdir="$(mpi_bindir)" \
