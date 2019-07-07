@@ -107,6 +107,7 @@ multilib_src_configure() {
 		--libdir="$(mpi_libdir)" \
 		--includedir="$(mpi_incdir)" \
 		--oldincludedir="$(mpi_incdir)" \
+		--mandir="$(mpi_mandir)" \
 		--sysconfdir="${EPREFIX}/etc/${PN}" \
 		--enable-pretty-print-stacktrace \
 		--enable-orterun-prefix-by-default \
@@ -144,6 +145,7 @@ multilib_src_install() {
 	dodir $(mpi_bindir)
 	dodir $(mpi_libdir)
 	dodir $(mpi_incdir)
+	dodir $(mpi_mandir)
 
 	default
 

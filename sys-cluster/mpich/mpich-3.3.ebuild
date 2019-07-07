@@ -95,6 +95,7 @@ multilib_src_configure() {
 	c="${c} --libdir=$(mpi_libdir)"
 	c="${c} --includedir=$(mpi_incdir)"
 	c="${c} --oldincludedir=$(mpi_incdir)"
+	c="${c} --mandir=$(mpi_mandir)"
 	c="${c} --sysconfdir=${EPREFIX}/etc/${PN}"
 	c="${c} --docdir=${EPREFIX}/usr/share/doc/${PF}"
 
@@ -132,6 +133,7 @@ multilib_src_install() {
 	dodir $(mpi_bindir)
 	dodir $(mpi_libdir)
 	dodir $(mpi_incdir)
+	dodir $(mpi_mandir)
 
 	default
 
