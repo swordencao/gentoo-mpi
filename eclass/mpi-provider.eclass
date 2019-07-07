@@ -70,6 +70,6 @@ mpi_libdir() {
 # @USAGE: [additional-args]
 # @DESCRIPTION:
 # Return the MPI manual location for installation
-mpi_bindir() {
+mpi_mandir() {
 	echo "${EPREFIX}/usr/share/mpi/${PN}/man"
 }
