@@ -10,13 +10,16 @@ if [ module-info mode remove ] {
   }
 }
 
-set root /usr/lib/mpi/openmpi
+# Use a better method to detect loading such as through modules
+# interface, and then remove this block
+set root /usr
 setenv    MPIHOME    $root
 
-# set paths
-prepend-path    CPATH    $root/include
-prepend-path    LD_LIBRARY_PATH    $root/lib
-prepend-path    LIBRARY_PATH    $root/lib
-prepend-path    MANPATH    $root/share/man
-prepend-path    PATH    $root/bin
-prepend-path    PKG_CONFIG_PATH    $root/lib/pkgconfig
+# Set paths
+# TODO: sed lib paths while installing MPI ebuild
+prepend-path    CPATH    /usr/include/mpi/openmpi
+prepend-path    LD_LIBRARY_PATH    /usr/lib/mpi/openmpi
+prepend-path    LIBRARY_PATH    /usr/lib/mpi/openmpi
+prepend-path    MANPATH    /usr/share/mpi/openmpi/man
+prepend-path    PATH    /usr/include/mpi/openmpi
+prepend-path    PKG_CONFIG_PATH    /usr/lib/mpi/openmpi/pkgconfig
