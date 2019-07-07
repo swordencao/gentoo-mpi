@@ -17,29 +17,6 @@ inherit multilib
 # Redundate DEPEND of gentoo-mpi, should be added but error happens
 #DEPEND+=" sys-cluster/modules"
 
-# @FUNCTION: mpi-create-module
-# @USAGE: [additional-args]
-# @DESCRIPTION:
-# Create an MPI module file.
-mpi-create-module() {
-	# TODO: check dir existence.
-	mkdir -p ${EPREFIX}/etc/modulefiles/mpi
-	insinto ${EPREFIX}/etc/modulefiles/mpi
-	doins $1
-	# TODO: restore installation location?
-}
-
-# @FUNCTION: package-create-module
-# @USAGE: [additional-args]
-# @DESCRIPTION:
-# Create an MPI-based package module file.
-package-create-module() {
-	# TODO: check dir existence.
-	mkdir -p ${EPREFIX}/etc/modulefiles/$1/$2
-	insinto ${EPREFIX}/etc/modulefiles/$1/$2
-	doins $1
-	# TODO: restore installation location?
-}
 
 # @FUNCTION: mpi_incdir
 # @USAGE: [additional-args]
