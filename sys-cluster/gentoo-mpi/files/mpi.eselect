@@ -5,6 +5,30 @@
 DESCRIPTION="Manage installed versions of MPI packages"
 MAINTAINER="sworden.cao@gmail.com"
 
+init() {
+	local d
+	[[ ${UID} -eq 0 ]] && HOME="${ROOT}/root"
+	d="$(canonicalise "${ROOT}/${HOME}")"
+	d="${d}/.env.d/"
+	user_ev_sh="${d}mpi.sh"; 
+	user_ev_csh="${d}mpi.csh"; 
+	
+	if [[ ! -d "${d}" ]]; then
+		mkdir "${d}" || die -q "Failed to create ${d}."
+	elif [[ ! -w "${d}" ]]; then
+		die -q "You do not have permission to mkdir ${d}."
+	fi
+	[[ -f "${user_ev_sh}" && ! -w "${user_ev_sh}" \
+		&& -f "${user_ev_csh}" && ! -w "${user_ev_csh}" ]] \
+		&& die -q "You do not have permission to write to ${user_ev_sh} or ${user_ev_csh}."
+}
+
+global_env() {
+	local d=$(canonicalise "${ROOT}/etc/env.d/mpi/${1}")
+	[ -z "${d}" ] && die "Cannot find global env file for ${1}"
+	ev=${d}
+}
+
 ### find a list of MPI targets
 
 find_targets() {
@@ -62,32 +86,55 @@ describe_set_options() {
 }
 
 do_set() {
+	init
+	global_env ${1}
+
     local targets=( $(find_targets) )
     [[ $# -eq 1 ]] || die -q "Please specify exactly one package to activate!"
     if [ ! -z "${MPIHOME}"] && [[ ${targets[@]} =~ "${MPIHOME}" ]]; then
-        #module unload mpi/${MPIHOME} \
-        echo "unloading mpi/${MPIHOME}"
-        /usr/share/Modules/bin/modulecmd bash unload mpi/${MPIHOME} \
-        	|| die -q "Couldn't unload previous module"
+cat <<-EOF >${user_ev_sh}
+module unload mpi/"${MPIHOME}"
+module load mpi/"${1}"
+EOF
+
+cat <<-EOF >${user_ev_csh}
+module unload mpi/"${MPIHOME}"
+module load mpi/"${1}"
+EOF
+	else
+cat <<-EOF >${user_ev_sh}
+module load mpi/"${1}"
+EOF
+
+cat <<-EOF >${user_ev_csh}
+module load mpi/"${1}"
+EOF
 	fi
-    echo "loading $1"
-    module_load $1
+    #echo "loading $1"
+    #module_load $1
+	echo "Remember to source /etc/profile or /etc/csh.login"
 }
 
-### set action
+### none action
 
 describe_none() {
     echo "Inactive all MPI targets"
 }
 
 do_none() {
+	init
+	global_env ${1}
+
     local i targets=( $(find_targets) )
 
     for (( i = 0; i < ${#targets[@]}; i++ )); do
-        #module unload mpi/${MPIHOME} \
-        echo "unloading mpi/${MPIHOME}"
-        /usr/share/Modules/bin/modulecmd bash unload mpi/${MPIHOME} \
-            || die -q "Couldn't unload previous module"
+cat <<-EOF >${user_ev_sh}
+module unload mpi/"${MPIHOME}"
+EOF
+
+cat <<-EOF >${user_ev_csh}
+module unload mpi/"${MPIHOME}"
+EOF
     done
 }
 
