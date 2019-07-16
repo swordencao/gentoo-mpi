@@ -53,7 +53,8 @@ _mpi_set_globals() {
 
 	for i in "${_MPI_SUPPORTED_IMPLS[@]}"; do
 		# TODO: export variables; MPI_PKG_DEP
-		mpi_export "${i}" MPI_PKG_DEP
+		#mpi_export "${i}" MPI_PKG_DEP
+		mpi_export "${i}"
 		# TODO: consider deps
 		#deps+="mpi_targets_${i}? ( ${MPI_PKG_DEP} ) "
 	done
@@ -82,7 +83,17 @@ unset -f _python_set_globals
 
 mpi_foreach_impl() {
 	local MULTIBUILD_VARIANTS
-	#TODO: implement
-	_mpi_obtain_impls
-	#TODO: multibuild_foreach_variant
+	# TODO: MULTIBUILD_VARIANTS is defined in forreach so use in a wrapper
+	MULTIBUILD_VARIANTS=()
+
+	local impl
+	for impl in "${_MPI_SUPPORTED_IMPLS[@]}"; do
+		has "${impl}" "${MPI_COMPAT[@]}" && \
+		use "mpi_targets_${impl}" && MULTIBUILD_VARIANTS+=( "${impl}" )
+	done
+	multibuild_foreach_variant mpi_export "${MULTIBUILD_VARIANT}" "${@}"
+}
+
+mpi_export() {
+	# CC CXX etc. PATH LD_LIBRARY_PATH?
 }
