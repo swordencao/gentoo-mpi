@@ -78,12 +78,11 @@ _mpi_set_globals() {
 	#readonly MPI_DEPS MPI_REQUIRED_USE
 }
 
-_python_set_globals
-unset -f _python_set_globals
+_mpi_set_globals
+unset -f _mpi_set_globals
 
 mpi_foreach_impl() {
 	local MULTIBUILD_VARIANTS
-	# TODO: MULTIBUILD_VARIANTS is defined in forreach so use in a wrapper
 	MULTIBUILD_VARIANTS=()
 
 	local impl
@@ -95,5 +94,14 @@ mpi_foreach_impl() {
 }
 
 mpi_export() {
-	# CC CXX etc. PATH LD_LIBRARY_PATH?
+	local impl var
+
+	impl=${1}
+	shift
+
+	# initial test, add case later
+	# for hpl, is there a better way to find out all available variables?
+	#local -x CXX PATH LD_LIBRARY_PATH {C,CXX,F,FC}FLAGS
+	export CC=mpicc
+	# CCFLAGS LINKER LINKFLAGS
 }
