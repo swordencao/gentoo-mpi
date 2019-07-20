@@ -81,18 +81,6 @@ _mpi_set_globals() {
 _mpi_set_globals
 unset -f _mpi_set_globals
 
-mpi_foreach_impl() {
-	local MULTIBUILD_VARIANTS
-	MULTIBUILD_VARIANTS=()
-
-	local impl
-	for impl in "${_MPI_SUPPORTED_IMPLS[@]}"; do
-		has "${impl}" "${MPI_COMPAT[@]}" && \
-		use "mpi_targets_${impl}" && MULTIBUILD_VARIANTS+=( "${impl}" )
-	done
-	multibuild_foreach_variant mpi_export "${MULTIBUILD_VARIANT}" "${@}"
-}
-
 mpi_export() {
 	local impl var
 
@@ -104,4 +92,85 @@ mpi_export() {
 	#local -x CXX PATH LD_LIBRARY_PATH {C,CXX,F,FC}FLAGS
 	export CC=mpicc
 	# CCFLAGS LINKER LINKFLAGS
+}
+
+_mpi_multibuild_wrapper() {
+	mpi_export "${MULTIBUILD_VARIANT}"
+	"${@}"
+}
+
+mpi_foreach_impl() {
+	local MULTIBUILD_VARIANTS
+	MULTIBUILD_VARIANTS=()
+
+	local impl
+	for impl in "${_MPI_SUPPORTED_IMPLS[@]}"; do
+		has "${impl}" "${MPI_COMPAT[@]}" && \
+		use "mpi_targets_${impl}" && MULTIBUILD_VARIANTS+=( "${impl}" )
+	done
+	#multibuild_foreach_variant mpi_export "${MULTIBUILD_VARIANT}" "${@}"
+	multibuild_foreach_variant _mpi_multibuild_wrapper "${@}"
+}
+
+mpi-r1_src_configure() {
+	mpi-r1_abi_src_configure() {
+
+		mkdir -p "${BUILD_DIR}" || die
+		pushd "${BUILD_DIR}" >/dev/null || die
+		if declare -f mpi_src_configure >/dev/null ; then
+			mpi_src_configure
+		else
+			default_src_configure
+		fi
+		popd >/dev/null || die
+	}
+
+	mpi_foreach_impl mpi-r1_abi_src_configure
+}
+
+mpi-r1_src_cmopile() {
+	mpi-r1_abi_src_compile() {
+
+		pushd "${BUILD_DIR}" >/dev/null || die
+		if declare -f mpi_src_compile >/dev/null ; then
+			mpi_src_compile
+		else
+			default_src_compile
+		fi
+		popd >/dev/null || die
+	}
+
+	mpi_foreach_impl mpi-r1_abi_src_compile
+}
+
+mpi-r1_multilib_src_configure() {
+	mpi-r1_multilib_abi_src_configure() {
+
+		# Should "${BUILD_DIR}" be fixed here?
+		mkdir -p "${BUILD_DIR}" || die
+		pushd "${BUILD_DIR}" >/dev/null || die
+		if declare -f mpi_multilib_src_configure >/dev/null ; then
+			mpi_multilib_src_configure
+		else
+			multilib_src_configure
+		fi
+		popd >/dev/null || die
+	}
+
+	mpi_foreach_impl mpi-r1_multilib_abi_src_configure
+}
+
+mpi-r1_multilib_src_cmopile() {
+	mpi-r1_multilib_abi_src_compile() {
+
+		pushd "${BUILD_DIR}" >/dev/null || die
+		if declare -f mpi_multilib_src_compile >/dev/null ; then
+			mpi_multilib_src_compile
+		else
+			multilib_src_compile
+		fi
+		popd >/dev/null || die
+	}
+
+	mpi_foreach_impl mpi-r1_multilib_abi_src_compile
 }
