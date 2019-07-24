@@ -128,7 +128,7 @@ mpi-r1_src_configure() {
 	mpi_foreach_impl mpi-r1_abi_src_configure
 }
 
-mpi-r1_src_cmopile() {
+mpi-r1_src_compile() {
 	mpi-r1_abi_src_compile() {
 
 		pushd "${BUILD_DIR}" >/dev/null || die
@@ -157,10 +157,11 @@ mpi-r1_multilib_src_configure() {
 		popd >/dev/null || die
 	}
 
+	# and for each multilib ABI
 	mpi_foreach_impl mpi-r1_multilib_abi_src_configure
 }
 
-mpi-r1_multilib_src_cmopile() {
+mpi-r1_multilib_src_compile() {
 	mpi-r1_multilib_abi_src_compile() {
 
 		pushd "${BUILD_DIR}" >/dev/null || die
