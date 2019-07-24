@@ -21,7 +21,7 @@ RDEPEND="
 DEPEND="${DEPEND}
 	virtual/pkgconfig"
 
-src_prepare() {
+mpi_src_configure() {
 	local a=""
 	# TODO: change lib 
 	local locallib="${EPREFIX}/usr/$(get_libdir)/lib"
@@ -40,10 +40,7 @@ src_prepare() {
 		-e '/^CCFLAGS\>/s|= .*|= $(HPL_DEFS) ${CFLAGS}|' \
 		-e "/^LINKFLAGS\>/s|= .*|= ${LDFLAGS}|" \
 		Make.gentoo_hpl_fblas_x86 || die
-}
 
-mpi_src_configure() {
-	# TODO: the file should be sed in mpi_configure()
 	default
 }
 
