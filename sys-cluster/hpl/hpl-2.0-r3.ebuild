@@ -35,8 +35,8 @@ mpi_src_configure() {
 		-e '/^MPdir\>/s,= .*,=,' \
 		-e '/^MPlib\>/s,= .*,=,' \
 		-e "/^LAlib\>/s,= .*,= ${localblas}," \
-		-e '/^LINKER\>/s,= .*,= mpicc,' \
-		-e '/^CC\>/s,= .*,= mpicc,' \
+		-e "/^LINKER\>/s,= .*,= ${CC}," \
+		-e "/^CC\>/s,= .*,= ${CC}," \
 		-e '/^CCFLAGS\>/s|= .*|= $(HPL_DEFS) ${CFLAGS}|' \
 		-e "/^LINKFLAGS\>/s|= .*|= ${LDFLAGS}|" \
 		Make.gentoo_hpl_fblas_x86 || die
