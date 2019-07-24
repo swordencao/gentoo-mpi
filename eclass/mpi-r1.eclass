@@ -91,6 +91,7 @@ mpi_export() {
 	# for hpl, is there a better way to find out all available variables?
 	#local -x CXX PATH LD_LIBRARY_PATH {C,CXX,F,FC}FLAGS
 	export CC=mpicc
+	export CC=mpicxx
 	# CCFLAGS LINKER LINKFLAGS
 }
 
