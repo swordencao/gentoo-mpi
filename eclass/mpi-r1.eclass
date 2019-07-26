@@ -11,7 +11,7 @@
 # This eclass manages building and installing MPI packages for multiple
 # MPI implementations.
 
-inherit multibuild
+inherit mpi-provider multibuild
 
 _mpi_set_impls() {
 	local i
@@ -82,17 +82,17 @@ _mpi_set_globals
 unset -f _mpi_set_globals
 
 mpi_export() {
-	local impl var
+	local impl
 
 	impl=${1}
-	shift
 
-	# initial test, add case later
+	# initial test, add cases later
 	# for hpl, is there a better way to find out all available variables?
 	#local -x CXX PATH LD_LIBRARY_PATH {C,CXX,F,FC}FLAGS
-	case mpich openmpi?
-	export CC=mpicc
-	export CXX=mpicxx
+	#case mpich openmpi?
+	export CC="$(mpi_bindir)"/mpicc
+	export CXX="$(mpi_bindir)"/mpic++
+	export FC="$(mpi_bindir)"/mpif77
 	# CCFLAGS LINKER LINKFLAGS
 }
 
