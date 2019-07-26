@@ -90,8 +90,9 @@ mpi_export() {
 	# initial test, add case later
 	# for hpl, is there a better way to find out all available variables?
 	#local -x CXX PATH LD_LIBRARY_PATH {C,CXX,F,FC}FLAGS
+	case mpich openmpi?
 	export CC=mpicc
-	export CC=mpicxx
+	export CXX=mpicxx
 	# CCFLAGS LINKER LINKFLAGS
 }
 
