@@ -14,6 +14,7 @@
 inherit mpi-provider multibuild
 
 _mpi_set_impls() {
+	debug-print-function ${FUNCNAME} "${@}"
 	local i
 
 	if ! declare -p MPI_COMPAT &>/dev/null; then
@@ -47,6 +48,7 @@ _mpi_set_impls() {
 }
 
 _mpi_set_globals() {
+	debug-print-function ${FUNCNAME} "${@}"
 	local deps i MPI_PKG_DEP
 
 	_mpi_set_impls
@@ -82,6 +84,7 @@ _mpi_set_globals
 unset -f _mpi_set_globals
 
 mpi_export() {
+	debug-print-function ${FUNCNAME} "${@}"
 	local impl
 
 	impl=${1}
@@ -97,11 +100,13 @@ mpi_export() {
 }
 
 _mpi_multibuild_wrapper() {
+	debug-print-function ${FUNCNAME} "${@}"
 	mpi_export "${MULTIBUILD_VARIANT}"
 	"${@}"
 }
 
 mpi_foreach_impl() {
+	debug-print-function ${FUNCNAME} "${@}"
 	local MULTIBUILD_VARIANTS
 	MULTIBUILD_VARIANTS=()
 
@@ -115,7 +120,10 @@ mpi_foreach_impl() {
 }
 
 mpi-r1_src_configure() {
+	debug-print-function ${FUNCNAME} "${@}"
+
 	mpi-r1_abi_src_configure() {
+		debug-print-function ${FUNCNAME} "${@}"
 
 		mkdir -p "${BUILD_DIR}" || die
 		pushd "${BUILD_DIR}" >/dev/null || die
@@ -131,7 +139,10 @@ mpi-r1_src_configure() {
 }
 
 mpi-r1_src_compile() {
+	debug-print-function ${FUNCNAME} "${@}"
+
 	mpi-r1_abi_src_compile() {
+		debug-print-function ${FUNCNAME} "${@}"
 
 		pushd "${BUILD_DIR}" >/dev/null || die
 		if declare -f mpi_src_compile >/dev/null ; then
@@ -146,7 +157,10 @@ mpi-r1_src_compile() {
 }
 
 mpi-r1_multilib_src_configure() {
+	debug-print-function ${FUNCNAME} "${@}"
+
 	mpi-r1_multilib_abi_src_configure() {
+		debug-print-function ${FUNCNAME} "${@}"
 
 		# Should "${BUILD_DIR}" be fixed here?
 		mkdir -p "${BUILD_DIR}" || die
@@ -164,7 +178,10 @@ mpi-r1_multilib_src_configure() {
 }
 
 mpi-r1_multilib_src_compile() {
+	debug-print-function ${FUNCNAME} "${@}"
+
 	mpi-r1_multilib_abi_src_compile() {
+		debug-print-function ${FUNCNAME} "${@}"
 
 		pushd "${BUILD_DIR}" >/dev/null || die
 		if declare -f mpi_multilib_src_compile >/dev/null ; then
