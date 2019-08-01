@@ -2,6 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=4
+MPI_COMPAT=( mpich openmpi )
 
 inherit eutils multilib
 
