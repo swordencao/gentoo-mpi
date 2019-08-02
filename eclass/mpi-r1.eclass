@@ -13,6 +13,43 @@
 
 inherit mpi-provider multibuild
 
+# @ECLASS-VARIABLE: _MPI_ALL_IMPLS
+# @INTERNAL
+# @DESCRIPTION:
+# All supported MPI implementations, most preferred last.
+_MPI_ALL_IMPLS=(
+	openmpi
+	mpich
+	mpich2
+	mvapich2
+)
+
+readonly _MPI_ALL_IMPLS
+
+_mpi_impl_supported() {
+	debug-print-function ${FUNCNAME} "${@}"
+
+	[[ ${#} -eq 1 ]] || die "${FUNCNAME}: takes exactly 1 argument (impl)."
+
+	local impl=${1}
+
+	# keep in sync with _MPI_ALL_IMPLS!
+	# (not using that list because inline patterns shall be faster)
+	case "${impl}" in
+		mpich|mpich2)
+			return 0
+			;;
+		openmpi)
+			return 0
+			;;
+		mvapich2)
+			return 0
+			;;
+		*)
+			die "Invalid implementation in MPI_COMPAT: ${impl}"
+	esac
+}
+
 _mpi_set_impls() {
 	debug-print-function ${FUNCNAME} "${@}"
 	local i
@@ -53,13 +90,13 @@ _mpi_set_globals() {
 
 	_mpi_set_impls
 
-	for i in "${_MPI_SUPPORTED_IMPLS[@]}"; do
+	#for i in "${_MPI_SUPPORTED_IMPLS[@]}"; do
 		# TODO: export variables; MPI_PKG_DEP
 		#mpi_export "${i}" MPI_PKG_DEP
-		mpi_export "${i}"
+		#mpi_export "${i}"
 		# TODO: consider deps
 		#deps+="mpi_targets_${i}? ( ${MPI_PKG_DEP} ) "
-	done
+	#done
 
 	local flags=( "${_MPI_SUPPORTED_IMPLS[@]/#/mpi_targets_}" )
 

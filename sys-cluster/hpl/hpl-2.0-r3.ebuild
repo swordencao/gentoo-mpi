@@ -4,7 +4,7 @@
 EAPI=4
 MPI_COMPAT=( mpich openmpi )
 
-inherit eutils multilib
+inherit eutils multilib mpi-r1
 
 DESCRIPTION="Portable Implementation of the Linpack Benchmark for Distributed-Memory Clusters"
 HOMEPAGE="http://www.netlib.org/benchmark/hpl/"
