@@ -37,10 +37,10 @@ _mpi_impl_supported() {
 	# keep in sync with _MPI_ALL_IMPLS!
 	# (not using that list because inline patterns shall be faster)
 	case "${impl}" in
-		mpich|mpich2)
+		openmpi)
 			return 0
 			;;
-		openmpi)
+		mpich|mpich2)
 			return 0
 			;;
 		mvapich2)
@@ -91,18 +91,27 @@ _mpi_set_globals() {
 
 	_mpi_set_impls
 
-	#for i in "${_MPI_SUPPORTED_IMPLS[@]}"; do
-		# TODO: export variables; MPI_PKG_DEP
+	for i in "${_MPI_SUPPORTED_IMPLS[@]}"; do
+		# TODO: modify this variable using utils helper function
 		#mpi_export "${i}" MPI_PKG_DEP
-		#mpi_export "${i}"
-		# TODO: consider deps
-		#deps+="mpi_targets_${i}? ( ${MPI_PKG_DEP} ) "
-	#done
+		case ${i} in
+			openmpi)
+				MPI_PKG_DEP='sys-cluster/openmpi';;
+			mpich)
+				MPI_PKG_DEP='sys-cluster/mpich';;
+			mpich2)
+				MPI_PKG_DEP='sys-cluster/mpich2';;
+			mvapich2)
+				MPI_PKG_DEP='sys-cluster/mvapich2';;
+			*)
+				die "Invalid implementation: ${i}"
+		esac
+		deps+="mpi_targets_${i}? ( ${MPI_PKG_DEP} ) "
+	done
 
 	local flags=( "${_MPI_SUPPORTED_IMPLS[@]/#/mpi_targets_}" )
 
-	# TODO: consider the following block, how to manage MPI deps?
-
+	# TODO: MPI_REQUIRED_USE
 	#local optflags=${flags[@]/%/(-)?}
 
 	#local flags_st=( "${_MPI_SUPPORTED_IMPLS[@]/#/-mpi_single_target_}" )
@@ -112,9 +121,10 @@ _mpi_set_globals() {
 
 	IUSE=${flags[*]}
 
-	#MPI_DEPS=${deps}
+	MPI_DEPS=${deps}
 	#MPI_REQUIRED_USE=${requse}
 	#MPI_USEDEP=${usedep}
+	readonly MPI_DEPS
 	#readonly MPI_DEPS MPI_REQUIRED_USE
 }
 

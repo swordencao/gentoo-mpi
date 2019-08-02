@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=4
-MPI_COMPAT=( mpich openmpi )
+MPI_COMPAT=( openmpi mpich )
 
 inherit eutils multilib mpi-r1
 
@@ -15,11 +15,14 @@ LICENSE="HPL"
 KEYWORDS="~x86 ~amd64"
 IUSE="doc"
 
-RDEPEND="
+COMMON_DEPEND="${MPI_DEPS}"
+
+RDEPEND="${COMMON_DEPEND}
 	virtual/blas
 	virtual/lapack
-	virtual/mpi"
+	"
 DEPEND="${DEPEND}
+	${COMMON_DEPEND}
 	virtual/pkgconfig"
 
 mpi_src_configure() {
