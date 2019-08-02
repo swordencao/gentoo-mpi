@@ -17,13 +17,18 @@ inherit multilib
 # Redundate DEPEND of gentoo-mpi, should be added but error happens
 #DEPEND+=" sys-cluster/modules"
 
+#TODO: check argument number if they are equal to 1/0
 
 # @FUNCTION: mpi_incdir
 # @USAGE: [additional-args]
 # @DESCRIPTION:
 # Return the MPI header location for installation
 mpi_incdir() {
-	echo "${EPREFIX}/usr/include/mpi/${PN}"
+	if [ "$#" -ne 1 ]; then
+		echo "${EPREFIX}/usr/include/mpi/${PN}" || die
+	else
+		echo "${EPREFIX}/usr/include/mpi/${1}" || die
+	fi
 }
 
 # @FUNCTION: mpi_bindir
@@ -31,7 +36,11 @@ mpi_incdir() {
 # @DESCRIPTION:
 # Return the MPI binary location for installation
 mpi_bindir() {
-	echo "${EPREFIX}/usr/libexec/mpi/${PN}"
+	if [ "$#" -ne 1 ]; then
+		echo "${EPREFIX}/usr/libexec/mpi/${PN}" || die
+	else
+		echo "${EPREFIX}/usr/libexec/mpi/${1}" || die
+	fi
 }
 
 # @FUNCTION: mpi_libdir
@@ -40,7 +49,11 @@ mpi_bindir() {
 # Return the MPI libraries location for installation, which should be
 # used in multilib ported functions
 mpi_libdir() {
-	echo "${EPREFIX}/usr/$(get_libdir)/mpi/${PN}"
+	if [ "$#" -ne 1 ]; then
+		echo "${EPREFIX}/usr/$(get_libdir)/mpi/${PN}" || die
+	else
+		echo "${EPREFIX}/usr/$(get_libdir)/mpi/${1}" || die
+	fi
 }
 
 # @FUNCTION: mpi_mandir
@@ -48,5 +61,9 @@ mpi_libdir() {
 # @DESCRIPTION:
 # Return the MPI manual location for installation
 mpi_mandir() {
-	echo "${EPREFIX}/usr/share/mpi/${PN}/man"
+	if [ "$#" -ne 1 ]; then
+		echo "${EPREFIX}/usr/share/mpi/${PN}/man" || die
+	else
+		echo "${EPREFIX}/usr/share/mpi/${1}/man" || die
+	fi
 }

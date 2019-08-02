@@ -141,9 +141,9 @@ mpi_export() {
 	# for hpl, is there a better way to find out all available variables?
 	#local -x CXX PATH LD_LIBRARY_PATH {C,CXX,F,FC}FLAGS
 	#case mpich openmpi?
-	export CC="$(mpi_bindir)"/mpicc
-	export CXX="$(mpi_bindir)"/mpic++
-	export FC="$(mpi_bindir)"/mpif77
+	export CC="$(mpi_bindir ${impl})"/mpicc
+	export CXX="$(mpi_bindir ${impl})"/mpic++
+	export FC="$(mpi_bindir ${impl})"/mpif77
 	# CCFLAGS LINKER LINKFLAGS
 }
 
