@@ -32,6 +32,7 @@ _mpi_impl_supported() {
 	[[ ${#} -eq 1 ]] || die "${FUNCNAME}: takes exactly 1 argument (impl)."
 
 	local impl=${1}
+	debug-print "${FUNCNAME}: implementation: ${impl}"
 
 	# keep in sync with _MPI_ALL_IMPLS!
 	# (not using that list because inline patterns shall be faster)
