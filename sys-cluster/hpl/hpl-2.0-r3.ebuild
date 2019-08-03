@@ -31,9 +31,15 @@ mpi_src_configure() {
 	local locallib="${EPREFIX}/usr/$(get_libdir)/lib"
 	local localblas="$(for i in $($(tc-getPKG_CONFIG) --libs-only-l blas lapack);do a="${a} ${i/-l/${locallib}}.so "; done; echo ${a})"
 
+	# copy all source files using multibuild in pkg_prepare stage
+	cp -r "${S}"/* . || die
+	#cp "${S}"/Makefile Makefile || die
+	#cp "${S}"/Make.top Make.top || die
+	#cp "${S}"/setup/Make.Linux_PII_FBLAS Make.gentoo_hpl_fblas_x86 || die
 	cp setup/Make.Linux_PII_FBLAS Make.gentoo_hpl_fblas_x86 || die
+
 	sed -i \
-		-e "/^TOPdir/s,= .*,= ${S}," \
+		-e "/^TOPdir/s,= .*,= ${BUILD_DIR}," \
 		-e '/^HPL_OPTS\>/s,=,= -DHPL_DETAILED_TIMING -DHPL_COPY_L,' \
 		-e '/^ARCH\>/s,= .*,= gentoo_hpl_fblas_x86,' \
 		-e '/^MPdir\>/s,= .*,=,' \

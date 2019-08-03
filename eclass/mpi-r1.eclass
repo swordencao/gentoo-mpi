@@ -13,6 +13,10 @@
 
 inherit mpi-provider multibuild
 
+# TODO: add src_install; add dobin etc. install functions; multilib
+#EXPORT_FUNCTIONS src_configure src_compile src_test src_install
+EXPORT_FUNCTIONS src_configure src_compile
+
 # @ECLASS-VARIABLE: _MPI_ALL_IMPLS
 # @INTERNAL
 # @DESCRIPTION:
