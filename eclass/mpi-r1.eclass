@@ -135,25 +135,28 @@ _mpi_set_globals() {
 _mpi_set_globals
 unset -f _mpi_set_globals
 
-mpi_export() {
+mpi_toolchain_setup() {
 	debug-print-function ${FUNCNAME} "${@}"
 	local impl
 
 	impl=${1}
 
+	# TODO: save/restore state
 	# initial test, add cases later
 	# for hpl, is there a better way to find out all available variables?
 	#local -x CXX PATH LD_LIBRARY_PATH {C,CXX,F,FC}FLAGS
 	#case mpich openmpi?
 	export CC="$(mpi_bindir ${impl})"/mpicc
 	export CXX="$(mpi_bindir ${impl})"/mpic++
-	export FC="$(mpi_bindir ${impl})"/mpif77
+	export FC="$(mpi_bindir ${impl})"/mpifort
+	export F77="$(mpi_bindir ${impl})"/mpif77
+	export LD="$(mpi_bindir ${impl})"/mpic++
 	# CCFLAGS LINKER LINKFLAGS
 }
 
 _mpi_multibuild_wrapper() {
 	debug-print-function ${FUNCNAME} "${@}"
-	mpi_export "${MULTIBUILD_VARIANT}"
+	mpi_toolchain_setup "${MULTIBUILD_VARIANT}"
 	"${@}"
 }
 
@@ -167,7 +170,6 @@ mpi_foreach_impl() {
 		has "${impl}" "${MPI_COMPAT[@]}" && \
 		use "mpi_targets_${impl}" && MULTIBUILD_VARIANTS+=( "${impl}" )
 	done
-	#multibuild_foreach_variant mpi_export "${MULTIBUILD_VARIANT}" "${@}"
 	multibuild_foreach_variant _mpi_multibuild_wrapper "${@}"
 }
 
