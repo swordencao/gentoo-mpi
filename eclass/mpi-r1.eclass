@@ -362,6 +362,8 @@ mpi-r1_src_install() {
 		popd >/dev/null || die
 	}
 
+	mpi_foreach_impl mpi-r1_abi_src_install
+
 	if declare -f mpi_src_install_all >/dev/null ; then
 		mpi_src_install_all
 	else
