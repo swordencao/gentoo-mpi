@@ -13,9 +13,8 @@
 
 inherit mpi-provider multibuild
 
-# TODO: add src_install; add dobin etc. install functions; multilib
-#EXPORT_FUNCTIONS src_configure src_compile src_test src_install
-EXPORT_FUNCTIONS src_configure src_compile
+# TODO: add dobin etc. install functions; multilib
+EXPORT_FUNCTIONS src_configure src_compile src_test src_install
 
 # @ECLASS-VARIABLE: _MPI_ALL_IMPLS
 # @INTERNAL
@@ -173,6 +172,119 @@ mpi_foreach_impl() {
 	multibuild_foreach_variant _mpi_multibuild_wrapper "${@}"
 }
 
+# @FUNCTION: _mpi_do
+# @USAGE: $1 - Standard ebuild command to replicate.
+# @DESCRIPTION: Large wrapping class for all of the {do,new}* commands
+# that need to respect the new root to install to.
+# Currently supports:
+# @CODE
+# dobin    newbin    dodoc     newdoc
+# doexe    newexe    dohtml    dolib
+# dolib.a  newlib.a  dolib.so  newlib.so
+# dosbin   newsbin   doman     newman
+# doinfo   dodir     dohard    doins
+# dosym
+# @CODE
+
+_mpi_do() {
+	debug-print-function ${FUNCNAME} "${@}"
+
+	local rc prefix d
+	local cmd=${1}
+	local ran=1
+	local slash=/
+
+	shift
+	if [ "${cmd#do}" != "${cmd}" ]; then
+		prefix="do"; cmd=${cmd#do}
+	elif [ "${cmd#new}" != "${cmd}" ]; then
+		prefix="new"; cmd=${cmd#new}
+	else
+		die "Unknown command passed to _mpi_do: ${cmd}"
+	fi
+	case ${cmd} in
+		#bin)
+		#	(
+		#		insinto $(mpi_bindir ${MULTIBUILD_VARIANT})
+		#		doins "${@}"
+		#	)
+		#	rc=$?;;
+		bin|sbin)
+			DESTTREE="$(mpi_bindir ${MULTIBUILD_VARIANT})" ${prefix}${cmd} $*
+			rc=$?;;
+		lib|lib.a|lib.so)
+			DESTTREE="$(mpi_libdir ${MULTIBUILD_VARIANT})/${CATEGORY}/${PN}" ${prefix}${cmd} $*
+			rc=$?;;
+		#doc)
+		#	_E_DOCDESTTREE_="../../../../${mdir}usr/share/doc/${PF}/${_E_DOCDESTTREE_}" \
+		#		${prefix}${cmd} $*
+		#	rc=$?
+		#	for d in "/share/doc/${P}" "/share/doc" "/share"; do
+		#		rmdir ${D}/usr${d} &>/dev/null
+		#	done
+		#	;;
+		#html)
+		#	_E_DOCDESTTREE_="../../../../${mdir}usr/share/doc/${PF}/www/${_E_DOCDESTTREE_}" \
+		#		${prefix}${cmd} $*
+		#	rc=$?
+		#	for d in "/share/doc/${P}/html" "/share/doc/${P}" "/share/doc" "/share"; do
+		#		rmdir ${D}/usr${d} &>/dev/null
+		#	done
+		#	;;
+		#exe)
+		#	_E_EXEDESTTREE_="${mdir}${_E_EXEDESTTREE_}" ${prefix}${cmd} $*
+		#	rc=$?;;
+		#man|info)
+		#	[ -d "${D}"usr/share/${cmd} ] && mv "${D}"usr/share/${cmd}{,-orig}
+		#	[ ! -d "${D}"${mdir}usr/share/${cmd} ] \
+		#		&& install -d "${D}"${mdir}usr/share/${cmd}
+		#	[ ! -d "${D}"usr/share ] \
+		#		&& install -d "${D}"usr/share
+		#
+		#	ln -snf ../../${mdir}usr/share/${cmd} ${D}usr/share/${cmd}
+		#	${prefix}${cmd} $*
+		#	rc=$?
+		#	rm "${D}"usr/share/${cmd}
+		#	[ -d "${D}"usr/share/${cmd}-orig ] \
+		#		&& mv "${D}"usr/share/${cmd}{-orig,}
+		#	[ "$(find "${D}"usr/share/)" == "${D}usr/share/" ] \
+		#		&& rmdir "${D}usr/share"
+		#	;;
+		#dir)
+		#	dodir "${@/#${slash}/${mdir}${slash}}"; rc=$?;;
+		#hard|sym)
+		#	${prefix}${cmd} "${mdir}$1" "${mdir}/$2"; rc=$?;;
+		#ins)
+		#	INSDESTTREE="${mdir}${INSTREE}" ${prefix}${cmd} $*; rc=$?;;
+		*)
+			rc=0;;
+	esac
+
+	[[ ${ran} -eq 0 ]] && die "mpi_do passed unknown command: ${cmd}"
+	return ${rc}
+}
+mpi_dobin()     { _mpi_do "dobin"        $*; }
+mpi_newbin()    { _mpi_do "newbin"       $*; }
+mpi_dodoc()     { _mpi_do "dodoc"        $*; }
+mpi_newdoc()    { _mpi_do "newdoc"       $*; }
+mpi_doexe()     { _mpi_do "doexe"        $*; }
+mpi_newexe()    { _mpi_do "newexe"       $*; }
+mpi_dohtml()    { _mpi_do "dohtml"       $*; }
+mpi_dolib()     { _mpi_do "dolib"        $*; }
+mpi_dolib.a()   { _mpi_do "dolib.a"      $*; }
+mpi_newlib.a()  { _mpi_do "newlib.a"     $*; }
+mpi_dolib.so()  { _mpi_do "dolib.so"     $*; }
+mpi_newlib.so() { _mpi_do "newlib.so"    $*; }
+mpi_dosbin()    { _mpi_do "dosbin"       $*; }
+mpi_newsbin()   { _mpi_do "newsbin"      $*; }
+mpi_doman()     { _mpi_do "doman"        $*; }
+mpi_newman()    { _mpi_do "newman"       $*; }
+mpi_doinfo()    { _mpi_do "doinfo"       $*; }
+mpi_dodir()     { _mpi_do "dodir"        $*; }
+mpi_dohard()    { _mpi_do "dohard"       $*; }
+mpi_doins()     { _mpi_do "doins"        $*; }
+mpi_dosym()     { _mpi_do "dosym"        $*; }
+
 mpi-r1_src_configure() {
 	debug-print-function ${FUNCNAME} "${@}"
 
@@ -208,6 +320,53 @@ mpi-r1_src_compile() {
 	}
 
 	mpi_foreach_impl mpi-r1_abi_src_compile
+}
+
+mpi-r1_src_test() {
+	debug-print-function ${FUNCNAME} "${@}"
+
+	mpi-r1_abi_src_test() {
+		debug-print-function ${FUNCNAME} "${@}"
+
+		pushd "${BUILD_DIR}" >/dev/null || die
+		if declare -f mpi_src_test >/dev/null ; then
+			mpi_src_test
+		else
+			default_src_test
+		fi
+		popd >/dev/null || die
+	}
+
+	mpi_foreach_impl mpi-r1_abi_src_test
+}
+
+mpi-r1_src_install() {
+	debug-print-function ${FUNCNAME} "$@"
+
+	mpi-r1_abi_src_install() {
+		debug-print-function ${FUNCNAME} "$@"
+
+		pushd "${BUILD_DIR}" >/dev/null || die
+		if declare -f mpi_src_install >/dev/null ; then
+			mpi_src_install
+		else
+			# default_src_install will not work here as it will
+			# break handling of DOCS wrt #468092
+			# so we split up the emake and doc-install part
+			# this is synced with __eapi4_src_install
+			if [[ -f Makefile || -f GNUmakefile || -f makefile ]] ; then
+				emake DESTDIR="${D}" install
+			fi
+		fi
+
+		popd >/dev/null || die
+	}
+
+	if declare -f mpi_src_install_all >/dev/null ; then
+		mpi_src_install_all
+	else
+		einstalldocs
+	fi
 }
 
 mpi-r1_multilib_src_configure() {
