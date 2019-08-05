@@ -113,22 +113,16 @@ _mpi_set_globals() {
 	done
 
 	local flags=( "${_MPI_SUPPORTED_IMPLS[@]/#/mpi_targets_}" )
-
-	# TODO: MPI_REQUIRED_USE
-	#local optflags=${flags[@]/%/(-)?}
-
-	#local flags_st=( "${_MPI_SUPPORTED_IMPLS[@]/#/-mpi_single_target_}" )
-	#optflags+=,${flags_st[@]/%/(-)}
-	#local requse="|| ( ${flags[*]} )"
-	#local usedep=${optflags// /,}
+	local requse="|| ( ${flags[*]} )"
+	local optflags=${flags[@]/%/(-)?}
+	local usedep=${optflags// /,}
 
 	IUSE=${flags[*]}
 
 	MPI_DEPS=${deps}
-	#MPI_REQUIRED_USE=${requse}
-	#MPI_USEDEP=${usedep}
-	readonly MPI_DEPS
-	#readonly MPI_DEPS MPI_REQUIRED_USE
+	MPI_REQUIRED_USE=${requse}
+	MPI_USEDEP=${usedep}
+	readonly MPI_DEPS MPI_REQUIRED_USE
 }
 
 _mpi_set_globals
