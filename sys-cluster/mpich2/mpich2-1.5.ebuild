@@ -5,7 +5,7 @@ EAPI=5
 
 FORTRAN_NEEDED=fortran
 
-inherit fortran-2
+inherit fortran-2 mpi-provider
 
 MY_PV=${PV/_/}
 DESCRIPTION="A high performance and portable MPI implementation"
@@ -18,6 +18,7 @@ KEYWORDS="~amd64 ~x86 ~amd64-linux ~x86-linux"
 IUSE="+cxx doc fortran mpi-threads romio threads"
 
 COMMON_DEPEND="
+	sys-cluster/gentoo-mpi
 	dev-libs/libaio
 	net-libs/libnsl:0=
 	sys-apps/hwloc
@@ -78,6 +79,13 @@ src_configure() {
 	export MPICH2LIB_LDFLAGS=${LDFLAGS}
 	unset CFLAGS CPPFLAGS CXXFLAGS FFLAGS FCFLAGS LDFLAGS
 
+	c="${c} --bindir=$(mpi_bindir)"
+	c="${c} --sbindir=$(mpi_bindir)"
+	c="${c} --libexecdir=$(mpi_bindir)"
+	c="${c} --libdir=$(mpi_libdir)"
+	c="${c} --includedir=$(mpi_incdir)"
+	c="${c} --oldincludedir=$(mpi_incdir)"
+	c="${c} --mandir=$(mpi_mandir)"
 	c="${c} --sysconfdir=${EPREFIX}/etc/${PN}"
 	c="${c} --docdir=${EPREFIX}/usr/share/doc/${PF}"
 	econf ${c} \
@@ -107,6 +115,6 @@ src_install() {
 	fi
 
 	if ! use doc; then
-		rm -rf "${D}"usr/share/doc/${PF}/www*
+		rm -rf "${D}"usr/share/doc/${PF}/www* || die
 	fi
 }

@@ -88,7 +88,6 @@ multilib_src_configure() {
 		c="${c} --enable-threads=single"
 	fi
 
-	# not all files, need to move them to dest dir
 	c="${c} --bindir=$(mpi_bindir)"
 	c="${c} --sbindir=$(mpi_bindir)"
 	c="${c} --libexecdir=$(mpi_bindir)"
