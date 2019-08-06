@@ -3,7 +3,7 @@
 
 EAPI="4"
 
-inherit fortran-2
+inherit fortran-2 mpi-provider
 
 DESCRIPTION="MVAPICH2 MPI-over-infiniband package auto-configured for OpenIB"
 HOMEPAGE="http://mvapich.cse.ohio-state.edu/"
@@ -15,6 +15,7 @@ KEYWORDS="~x86 ~amd64"
 IUSE="debug fortran large-cluster medium-cluster romio threads"
 
 RDEPEND="
+	sys-cluster/gentoo-mpi
 	sys-fabric/libibverbs
 	sys-fabric/libibumad
 	sys-fabric/libibmad
@@ -41,7 +42,7 @@ pkg_setup() {
 				BUILD_ARCH=-D_EM64T_
 			else
 				BUILD_ARCH=-D_X86_64_
-			fi
+				fi
 			;;
 		x86)
 			BUILD_ARCH=-D_IA32_
@@ -120,6 +121,14 @@ src_configure() {
 		${S/-beta2/}/Makefile.in
 	sed -i '/bindir/s/ ${bindir}/ ${DESTDIR}${bindir}/' ${S/-beta2/}/src/pm/mpd/Makefile.in
 	cd ${S/-beta2/}
+
+	c="${c} --bindir=$(mpi_bindir)"
+	c="${c} --sbindir=$(mpi_bindir)"
+	c="${c} --libexecdir=$(mpi_bindir)"
+	c="${c} --libdir=$(mpi_libdir)"
+	c="${c} --includedir=$(mpi_incdir)"
+	c="${c} --oldincludedir=$(mpi_incdir)"
+	c="${c} --mandir=$(mpi_mandir)"
 
 	econf ${c}
 }

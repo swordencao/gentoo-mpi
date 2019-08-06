@@ -29,7 +29,6 @@ DEPEND="${COMMON_DEPEND}
 	sys-devel/libtool"
 
 RDEPEND="${COMMON_DEPEND}
-	!sys-cluster/mpich2
 	!sys-cluster/nullmpi"
 
 S="${WORKDIR}"/${PN}-${MY_PV}
@@ -128,12 +127,6 @@ multilib_src_test() {
 }
 
 multilib_src_install() {
-	# create mpi related directories if they are not exist
-	dodir $(mpi_bindir)
-	dodir $(mpi_libdir)
-	dodir $(mpi_incdir)
-	dodir $(mpi_mandir)
-
 	default
 
 	# fortran header cannot be wrapped (bug #540508), workaround part 1

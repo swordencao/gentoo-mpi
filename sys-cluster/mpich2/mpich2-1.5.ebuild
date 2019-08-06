@@ -28,9 +28,7 @@ DEPEND="${COMMON_DEPEND}
 	dev-lang/perl
 	sys-devel/libtool"
 
-RDEPEND="${COMMON_DEPEND}
-	!sys-cluster/mpich
-	!sys-cluster/openmpi"
+RDEPEND="${COMMON_DEPEND}"
 
 S="${WORKDIR}"/${PN}-${MY_PV}
 

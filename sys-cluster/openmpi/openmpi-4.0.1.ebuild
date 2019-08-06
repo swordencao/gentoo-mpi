@@ -44,7 +44,6 @@ REQUIRED_USE="openmpi_rm_slurm? ( !openmpi_rm_pbs )
 
 CDEPEND="
 	sys-cluster/gentoo-mpi
-	!sys-cluster/mpich2
 	!sys-cluster/nullmpi
 	!sys-cluster/mpiexec
 	>=dev-libs/libevent-2.0.22[${MULTILIB_USEDEP},threads]
@@ -141,12 +140,6 @@ multilib_src_test() {
 }
 
 multilib_src_install() {
-	# create mpi related directories if they are not exist
-	dodir $(mpi_bindir)
-	dodir $(mpi_libdir)
-	dodir $(mpi_incdir)
-	dodir $(mpi_mandir)
-
 	default
 
 	# fortran header cannot be wrapped (bug #540508), workaround part 1
