@@ -135,15 +135,34 @@ mpi_toolchain_setup() {
 	impl=${1}
 
 	# TODO: save/restore state
-	# initial test, add cases later
-	# for hpl, is there a better way to find out all available variables?
+	# Is there a better way to find out all available variables?
 	#local -x CXX PATH LD_LIBRARY_PATH {C,CXX,F,FC}FLAGS
-	#case mpich openmpi?
-	export CC="$(mpi_bindir ${impl})"/mpicc
-	export CXX="$(mpi_bindir ${impl})"/mpic++
-	export FC="$(mpi_bindir ${impl})"/mpifort
-	export F77="$(mpi_bindir ${impl})"/mpif77
-	export LD="$(mpi_bindir ${impl})"/mpic++
+	case ${impl} in
+		mpich|openmpi)
+			export CC="$(mpi_bindir ${impl})"/mpicc
+			export CXX="$(mpi_bindir ${impl})"/mpic++
+			export FC="$(mpi_bindir ${impl})"/mpifort
+			export F77="$(mpi_bindir ${impl})"/mpif77
+			export LD="$(mpi_bindir ${impl})"/mpic++
+			;;
+		mpich2)
+			export CC="$(mpi_bindir ${impl})"/mpicc
+			export CXX="$(mpi_bindir ${impl})"/mpic++
+			export FC="$(mpi_bindir ${impl})"/mpif90
+			export F77="$(mpi_bindir ${impl})"/mpif77
+			export LD="$(mpi_bindir ${impl})"/mpic++
+			;;
+		mvapich2)
+			# TODO: bug 463188
+			export CC="$(mpi_bindir ${impl})"/mpicc
+			export CXX="$(mpi_bindir ${impl})"/mpic++
+			export FC="$(mpi_bindir ${impl})"/mpifort
+			export F77="$(mpi_bindir ${impl})"/mpif77
+			export LD="$(mpi_bindir ${impl})"/mpic++
+			;;
+		*)
+			die "Invalid implementation: ${i}"
+	esac
 	# CCFLAGS LINKER LINKFLAGS
 }
 
