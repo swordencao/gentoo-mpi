@@ -6,11 +6,10 @@
 # Jian Cao <sworden.cao@gmail.com>
 # @AUTHOR:
 # Jian Cao <sworden.cao@gmail.com>
-# @BLURB: 
+# @BLURB: An eclass for providing general MPI paths
 # @DESCRIPTION:
-# An eclass depends on Modules, provides interfaces to ebuilds,
-# change ${EPREFIX} for MPI or MPI-based packages, depending on
-# package type, keywords, package name and version number.
+# An eclass providing MPI paths for ebuilds, depending on specific MPI
+# versions and multilib architectures.
 
 inherit multilib
 
@@ -20,7 +19,7 @@ inherit multilib
 #TODO: check argument number if they are equal to 1/0
 
 # @FUNCTION: mpi_incdir
-# @USAGE: [additional-args]
+# @USAGE: [<argv>...]
 # @DESCRIPTION:
 # Return the MPI header location for installation
 mpi_incdir() {
@@ -32,7 +31,7 @@ mpi_incdir() {
 }
 
 # @FUNCTION: mpi_bindir
-# @USAGE: [additional-args]
+# @USAGE: [<argv>...]
 # @DESCRIPTION:
 # Return the MPI binary location for installation
 mpi_bindir() {
@@ -44,7 +43,7 @@ mpi_bindir() {
 }
 
 # @FUNCTION: mpi_libdir
-# @USAGE: [additional-args]
+# @USAGE: [<argv>...]
 # @DESCRIPTION:
 # Return the MPI libraries location for installation, which should be
 # used in multilib ported functions
@@ -57,7 +56,7 @@ mpi_libdir() {
 }
 
 # @FUNCTION: mpi_mandir
-# @USAGE: [additional-args]
+# @USAGE: [<argv>...]
 # @DESCRIPTION:
 # Return the MPI manual location for installation
 mpi_mandir() {
