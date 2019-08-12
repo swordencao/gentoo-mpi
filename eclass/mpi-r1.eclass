@@ -6,10 +6,17 @@
 # Jian Cao <sworden.cao@gmail.com>
 # @AUTHOR:
 # Jian Cao <sworden.cao@gmail.com>
-# @BLURB: A helper eclass for MPI packages.
+# @BLURB: A common eclass for MPI packages.
 # @DESCRIPTION:
-# This eclass manages building and installing MPI packages for multiple
-# MPI implementations.
+# A common eclass providing helper functions to build and install
+# packages supporting being installed for multiple MPI implementations.
+#
+# This eclass sets correct IUSE. Modification of REQUIRED_USE has to
+# be done by the author of the ebuild (but MPI_REQUIRED_USE is
+# provided for convenience, see below). mpi-r1 exports MPI_DEPS
+# and MPI_USEDEP so you can create correct dependencies for your
+# package easily. It also exports functions to easily run a command for
+# each enabled MPI implementation.
 
 inherit mpi-provider multibuild
 
@@ -29,6 +36,98 @@ _MPI_ALL_IMPLS=(
 
 readonly _MPI_ALL_IMPLS
 
+# @ECLASS-VARIABLE: MPI_COMPAT
+# @REQUIRED
+# @DESCRIPTION:
+# This variable contains a list of MPI implementations the package
+# supports. It must be set before the `inherit' call. It has to be
+# an array.
+#
+# Example:
+# @CODE
+# MPI_COMPAT=( openmpi mpich mpich2 )
+# @CODE
+# @ECLASS-VARIABLE: MPI_REQ_USE
+# @DEFAULT_UNSET
+# @DESCRIPTION:
+# The list of USEflags required to be enabled on the chosen MPI
+# implementations, formed as a USE-dependency string. It should be valid
+# for all implementations in MPI_COMPAT, so it may be necessary to
+# use USE defaults.
+#
+# This should be set before calling `inherit'.
+#
+# Example:
+# @CODE
+# MPI_REQ_USE="java,romio(-)?"
+# @CODE
+#
+# It will cause the MPI dependencies to look like:
+# @CODE
+# mpi_targets_openmpi? ( sys-cluster/openmpi[java,romio(-)?] )
+# @CODE
+
+# @ECLASS-VARIABLE: MPI_DEPS
+# @DESCRIPTION:
+# This is an eclass-generated MPI dependency string for all
+# implementations listed in MPI_COMPAT.
+#
+# Example use:
+# @CODE
+# RDEPEND="${MPI_DEPS}
+#	dev-foo/mydep"
+# DEPEND="${RDEPEND}"
+# @CODE
+#
+# Example value:
+# @CODE
+# mpi_targets_openmpi? ( sys-cluster/openmpi[java,romio(-)?] )
+# @CODE
+
+# @ECLASS-VARIABLE: MPI_USEDEP
+# @DESCRIPTION:
+# This is an eclass-generated USE-dependency string which can be used to
+# depend on another MPI package being built for the same MPI
+# implementations.
+#
+# Example use:
+# @CODE
+# RDEPEND="dev-mpi/foo[${MPI_USEDEP}]"
+# @CODE
+#
+# Example value:
+# @CODE
+# mpi_targets_openmpi(-)?,mpi_targets_mpich(-)?
+# @CODE
+
+# @ECLASS-VARIABLE: MPI_REQUIRED_USE
+# @DESCRIPTION:
+# This is an eclass-generated required-use expression which ensures at
+# least one MPI implementation has been enabled.
+#
+# This expression should be utilized in an ebuild by including it in
+# REQUIRED_USE, optionally behind a use flag.
+#
+# Example use:
+# @CODE
+# REQUIRED_USE="mpi? ( ${MPI_REQUIRED_USE} )"
+# @CODE
+#
+# Example value:
+# @CODE
+# || ( mpi_targets_openmpi mpi_targets_mpich )
+# @CODE
+
+# @FUNCTION: _mpi_impl_supported
+# @USAGE: <impl>
+# @INTERNAL
+# @DESCRIPTION:
+# Check whether the implementation <impl> (MPI_COMPAT-form)
+# is still supported.
+#
+# Returns 0 if the implementation is valid and supported. If it is
+# unsupported, returns 1 -- and the caller should ignore the entry.
+# If it is invalid, dies with an appopriate error messages.
 _mpi_impl_supported() {
 	debug-print-function ${FUNCNAME} "${@}"
 
@@ -54,6 +153,23 @@ _mpi_impl_supported() {
 	esac
 }
 
+# @FUNCTION: _mpi_set_impls
+# @INTERNAL
+# @DESCRIPTION:
+# Check MPI_COMPAT for well-formedness and validity, then set
+# two global variables:
+#
+# - _MPI_SUPPORTED_IMPLS containing valid implementations supported
+#   by the ebuild,
+#
+# - and _MPI_UNSUPPORTED_IMPLS containing valid implementations that
+#   are not supported by the ebuild.
+#
+# Implementations in both variables are ordered using the pre-defined
+# eclass implementation ordering.
+#
+# This function must be called once in global scope by an eclass
+# utilizing MPI_COMPAT.
 _mpi_set_impls() {
 	debug-print-function ${FUNCNAME} "${@}"
 	local i
@@ -128,6 +244,9 @@ _mpi_set_globals() {
 _mpi_set_globals
 unset -f _mpi_set_globals
 
+# @FUNCTION: mpi_toolchain_setup
+# @DESCRIPTION:
+# Setup necessary toolchain or flags for specific MPI implementation.
 mpi_toolchain_setup() {
 	debug-print-function ${FUNCNAME} "${@}"
 	local impl
@@ -135,8 +254,6 @@ mpi_toolchain_setup() {
 	impl=${1}
 
 	# TODO: save/restore state
-	# Is there a better way to find out all available variables?
-	#local -x CXX PATH LD_LIBRARY_PATH {C,CXX,F,FC}FLAGS
 	case ${impl} in
 		mpich|openmpi)
 			export CC="$(mpi_bindir ${impl})"/mpicc
@@ -166,12 +283,32 @@ mpi_toolchain_setup() {
 	# CCFLAGS LINKER LINKFLAGS
 }
 
+# @FUNCTION: _mpi_multibuild_wrapper
+# @USAGE: <command> [<args>...]
+# @INTERNAL
+# @DESCRIPTION:
+# Initialize the environment for MPI implementation selected
+# for multibuild.
 _mpi_multibuild_wrapper() {
 	debug-print-function ${FUNCNAME} "${@}"
 	mpi_toolchain_setup "${MULTIBUILD_VARIANT}"
 	"${@}"
 }
 
+# @FUNCTION: mpi_foreach_impl
+# @USAGE: <command> [<args>...]
+# @DESCRIPTION:
+# Run the given command for each of the enabled MPI implementations.
+# If additional parameters are passed, they will be passed through
+# to the command.
+#
+# The function will return 0 status if all invocations succeed.
+# Otherwise, the return code from first failing invocation will
+# be returned.
+#
+# For each command being run, specified MPI toolchain, flags and
+# BUILD_DIR are set locally, and the former two are exported to the
+# command environment.
 mpi_foreach_impl() {
 	debug-print-function ${FUNCNAME} "${@}"
 	local MULTIBUILD_VARIANTS
@@ -187,6 +324,7 @@ mpi_foreach_impl() {
 
 # @FUNCTION: _mpi_do
 # @USAGE: $1 - Standard ebuild command to replicate.
+# @INTERNAL
 # @DESCRIPTION: Large wrapping class for all of the {do,new}* commands
 # that need to respect the new root to install to.
 # Currently supports:
@@ -198,7 +336,6 @@ mpi_foreach_impl() {
 # doinfo   dodir     dohard    doins
 # dosym
 # @CODE
-
 _mpi_do() {
 	debug-print-function ${FUNCNAME} "${@}"
 
