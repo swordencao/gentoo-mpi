@@ -225,6 +225,9 @@ _mpi_set_globals() {
 			*)
 				die "Invalid implementation: ${i}"
 		esac
+		if [[ ${MPI_REQ_USE} ]]; then
+			MPI_PKG_DEP+=[${MPI_REQ_USE}]
+		fi
 		deps+="mpi_targets_${i}? ( ${MPI_PKG_DEP} ) "
 	done
 
