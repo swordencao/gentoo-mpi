@@ -512,6 +512,19 @@ mpi-r1_src_install() {
 			fi
 		fi
 
+		# install modulefile
+		insinto "/etc/modulefiles/${CATEGORY}/${PN}"
+		MPI_MODULEFILE="modulefile-${MULTIBUILD_VARIANT}"
+		cp "${FILESDIR}/modulefile" "${T}/${MPI_MODULEFILE}" || die
+		cat << EOF >> "${T}/${MPI_MODULEFILE}" || die
+prepend-path    MPI_PACKAGES    ${PN}
+prepend-path    LD_LIBRARY_PATH    $(mpi_libdir ${MULTIBUILD_VARIANT})/${CATEGORY}/${PN}
+prepend-path    LIBRARY_PATH    $(mpi_libdir ${MULTIBUILD_VARIANT})/${CATEGORY}/${PN}
+prepend-path    PATH    $(mpi_bindir ${MULTIBUILD_VARIANT})
+prepend-path    PKG_CONFIG_PATH    $(mpi_libdir ${MULTIBUILD_VARIANT})/${CATEGORY}/${PN}/pkgconfig
+EOF
+		doins "${T}/${MPI_MODULEFILE}"
+
 		popd >/dev/null || die
 	}
 
@@ -523,12 +536,10 @@ mpi-r1_src_install() {
 		einstalldocs
 	fi
 
-	# install modulefile and eselect file
-	insinto /etc/modulefiles/"${CATEGORY}"/"${PN}"
-	doins "${FILESDIR}"/modulefile
+	# install eselect file
 	insinto /usr/share/eselect/modules
 	# TODO: put eselect template into gentoo-mpi and modify later
-	doins "${FILESDIR}"/"${PN}".eselect
+	doins "${FILESDIR}/${PN}.eselect"
 }
 
 mpi-r1_multilib_src_configure() {
