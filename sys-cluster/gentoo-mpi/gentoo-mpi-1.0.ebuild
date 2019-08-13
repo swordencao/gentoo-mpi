@@ -5,7 +5,7 @@ EAPI=7
 
 inherit eutils
 
-DESCRIPTION="A framework supports for multiple MPI implementations"
+DESCRIPTION="A framework in support of multiple MPI implementations"
 HOMEPAGE="https://github.com/swordencao/gentoo-mpi"
 
 LICENSE="GPL-2"
@@ -25,17 +25,15 @@ src_install() {
 	# install eselect files
 	insinto /usr/share/eselect/modules
 	doins "${FILESDIR}"/mpi.eselect
-	doins "${FILESDIR}"/hpl.eselect
 
 	# install modulefiles
 	MPI_MODULEFILE="/etc/modulefiles/mpi"
 	dodir "${MPI_MODULEFILE}"
 	insinto "${MPI_MODULEFILE}"
-	doins "${FILESDIR}"/modulefile/mpi/*
-	#dodir "${FILESDIR}"/modulefile/hpl /etc/modulefiles/hpl
+	doins "${FILESDIR}"/modulefile/*
 
 	# configure modules
-	# any initializations?
+	# TODO: remove existing file in the first phase
 	insinto /usr/share/Modules/init
 	newins "${FILESDIR}"/modulespath .modulespath
 }
