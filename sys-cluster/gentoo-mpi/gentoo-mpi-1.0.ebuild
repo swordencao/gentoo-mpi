@@ -22,13 +22,15 @@ RDEPEND="${COMMON_DEPEND}"
 S="${WORKDIR}"
 
 src_install() {
+	# install modulefiles
+	insinto /etc/modulefiles
+	doins "${FILESDIR}"/modulefile/template
+	insinto /etc/modulefiles/mpi
+	doins "${FILESDIR}"/modulefile/mpi/*
+
 	# install eselect files
 	insinto /usr/share/eselect/modules
 	doins "${FILESDIR}"/mpi.eselect
-
-	# install modulefiles
-	insinto /etc/modulefiles/mpi
-	doins "${FILESDIR}"/modulefile/*
 
 	# configure modules
 	# TODO: remove existing file in the first phase

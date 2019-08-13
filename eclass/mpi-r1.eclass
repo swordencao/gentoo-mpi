@@ -515,7 +515,7 @@ mpi-r1_src_install() {
 		# install modulefile
 		insinto "/etc/modulefiles/${CATEGORY}/${PN}"
 		MPI_MODULEFILE="modulefile-${MULTIBUILD_VARIANT}"
-		cp "${FILESDIR}/modulefile" "${T}/${MPI_MODULEFILE}" || die
+		cp "/etc/modulefiles/template" "${T}/${MPI_MODULEFILE}" || die
 		cat << EOF >> "${T}/${MPI_MODULEFILE}" || die
 prepend-path    MPI_PACKAGES    ${PN}
 prepend-path    LD_LIBRARY_PATH    $(mpi_libdir ${MULTIBUILD_VARIANT})/${CATEGORY}/${PN}
