@@ -28,7 +28,7 @@ DEPEND="${DEPEND}
 
 mpi_src_configure() {
 	local a=""
-	# TODO: change lib 
+	# TODO: need to change following two line due to new blas framework?
 	local locallib="${EPREFIX}/usr/$(get_libdir)/lib"
 	local localblas="$(for i in $($(tc-getPKG_CONFIG) --libs-only-l blas lapack);do a="${a} ${i/-l/${locallib}}.so "; done; echo ${a})"
 

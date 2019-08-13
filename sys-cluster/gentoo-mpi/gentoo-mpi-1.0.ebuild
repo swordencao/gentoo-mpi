@@ -27,9 +27,7 @@ src_install() {
 	doins "${FILESDIR}"/mpi.eselect
 
 	# install modulefiles
-	MPI_MODULEFILE="/etc/modulefiles/mpi"
-	dodir "${MPI_MODULEFILE}"
-	insinto "${MPI_MODULEFILE}"
+	insinto /etc/modulefiles/mpi
 	doins "${FILESDIR}"/modulefile/*
 
 	# configure modules

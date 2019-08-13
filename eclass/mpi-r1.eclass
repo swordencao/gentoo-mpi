@@ -522,6 +522,13 @@ mpi-r1_src_install() {
 	else
 		einstalldocs
 	fi
+
+	# install modulefile and eselect file
+	insinto /etc/modulefiles/"${CATEGORY}"/"${PN}"
+	doins "${FILESDIR}"/modulefile
+	insinto /usr/share/eselect/modules
+	# TODO: put eselect template into gentoo-mpi and modify later
+	doins "${FILESDIR}"/"${PN}".eselect
 }
 
 mpi-r1_multilib_src_configure() {
