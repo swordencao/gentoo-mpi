@@ -8,10 +8,10 @@ Based on the ideas of python-r1, a new MPI framework ported from existing MPI ap
 
 ## Quick Start
 
-You may need to specify package versions to satisfy the overlay requirement.
+You may need to set a high overlay priority to use modified ebuilds.
 
 ```bash
-emerge sys-cluster/openmpi sys-cluster/mpich
+emerge =sys-cluster/openmpi-4.0.1 =sys-cluster/mpich-3.3
 USE="mpi_targets_openmpi mpi_targets_mpich" emerge -a =sys-cluster/hpl-2.0-r3
 ```
 
