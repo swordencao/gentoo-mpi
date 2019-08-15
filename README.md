@@ -15,7 +15,7 @@ emerge =sys-cluster/openmpi-4.0.1 =sys-cluster/mpich-3.3
 USE="mpi_targets_openmpi mpi_targets_mpich" emerge -a =sys-cluster/hpl-2.0-r3
 ```
 
-A user could also use eselect interface to manage the environment of  multiple MPI implementations.
+A user could also use eselect interface to manage the environment among different MPI implementations.
 
 ```bash
 eselect mpi set openmpi
