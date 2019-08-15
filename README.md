@@ -24,8 +24,8 @@ eselect mpi list
 
 ## Documentation
 
-* mpi-r1
-* mpi-provider
+* [mpi-r1](https://github.com/swordencao/gentoo-mpi/blob/master/docs/mpi-r1.md) - install files that may be used with one or more of installed MPI implementations
+* [mpi-provider](https://github.com/swordencao/gentoo-mpi/blob/master/docs/mpi-provider.md) - providing MPI paths for ebuilds depending on specific MPI versions and multilib architectures
 
 ## Issues
 
