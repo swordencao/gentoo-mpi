@@ -1,6 +1,6 @@
 # mpi-provider.eclass
 
-mpi-provider is an eclass An eclass providing MPI paths for ebuilds, depending on specific MPI versions and multilib architectures.
+mpi-provider is an eclass providing MPI paths for ebuilds, depending on specific MPI versions and multilib architectures.
 
 ## Description
 
