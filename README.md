@@ -29,6 +29,59 @@ eselect mpi list
 * [mpi-r1](https://github.com/swordencao/gentoo-mpi/blob/master/docs/mpi-r1.md) - install files that may be used with one or more of installed MPI implementations
 * [mpi-provider](https://github.com/swordencao/gentoo-mpi/blob/master/docs/mpi-provider.md) - providing MPI paths for ebuilds depending on specific MPI versions and multilib architectures
 
+## Milestone
+
+* Week 1 (5.27 - 6.2)
+
+This week I created an overlay repository and wrote MPI and MPI-based packages (for example, hpl) module files. Based on setting up a virtual environment, they worked as expected. During this period, I investigated and tested several things may influence the module files, e.g. run-time environment variables. And I found the MPI_TARGETS is the most important and most time-consuming part over the project.
+
+* Week 2 (6.3 - 6.9)
+
+This week I designed and implemented mpi.eselect and a MPI-based package sys-cluster/hpl as an example. These two eselect files can both handle 'list', 'set', 'show' and 'none'. The eselect files basically connect to moduel files' actions directly, which including environment variables operations mostly. So users are able to use eselect directly without 'module' command (actually 'module' works but it is not necessary).
+
+* Week 3-4 (6.10 - 6.23)
+
+For the recent two weeks, I implemented gentoo-mpi and mpi-provider.eclass basically. More detailed, the modulefiles and eselect files which were done in the previous weeks are initially installed by gentoo-mpi. mpi-provider facilitates MPI packages to modify these files specifically.
+
+* Week 5-6 (6.24 - 7.7)
+
+These two weeks I used some of buffer time, however the basic goal for MPI-Provider is finished:
+
+1. Multiple MPI packages (mpich-3.3, openmpi-4.0.1 are tested) could be installed together on the same system without conflict, with the help of mpi-provider.eclass. There are four main types of paths to maintain - libpath, binpath, incpath and manpath.
+2. Refactor modulefiles in order to use specific fixed MPI paths rather than modifying by sed.
+
+* Week 7 (7.8 - 7.14)
+
+1. Reimplement mpi.eselect using some of empi’s implementation.
+2. Create mpi-r1.eclass for installing different packages satisfying among different MPI implementations, which of some ideas are based on python-r1.  A MPI_COMPAT is designed for list all available MPI implementations in an ebuild, and _MPI_SUPPORTED_IMPLS stands for currently supported MPI implementations.
+
+* Week 8 (7.15 - 7.21)
+
+1. Removed mpi_foreach_impl(), and porting functions – including multilib:
+ 
+mpi-r1_src_configure
+mpi-r1_src_cmopile
+mpi-r1_multilib_src_configure
+mpi-r1_multilib_src_cmopile
+ 
+2. Added hpl for testing mpi-r1.
+
+* Week 9 (7.22 - 7.28)
+
+1. tested hpl with mpi-r1
+2. wrote documentation of mpi-provider and mpi-r1
+
+* Week 10-11 (7.29 - 8.11)
+
+1. Found the fixed issues for current implemented packages.
+2. Finish writing documentations.
+3. Tested openmpi, mpich, mpich2, and mvapich2. There is an existing bug for mvapich2 - 463188 and I will look into it later.
+4. Fixed installation of modulefiles and eselect files.
+
+* Week 12 (8.12 - 8.18)
+
+Fix issues, polish documentation, and other miscellaneous jobs.
+
 ## TODO
 
 The core functionality (e.g. parallel install of openmpi, mpich and
