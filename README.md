@@ -29,6 +29,19 @@ eselect mpi list
 * [mpi-r1](https://github.com/swordencao/gentoo-mpi/blob/master/docs/mpi-r1.md) - install files that may be used with one or more of installed MPI implementations
 * [mpi-provider](https://github.com/swordencao/gentoo-mpi/blob/master/docs/mpi-provider.md) - providing MPI paths for ebuilds depending on specific MPI versions and multilib architectures
 
-## Issues
+## TODO List
 
-Please refer to [issues](https://github.com/swordencao/gentoo-mpi/issues) page.
+The core functionality (e.g. parallel install of openmpi, mpich and
+hpl using either or both of them) should work, however, there are some tasks to improve the project:
+
+- [x] Add support for all MPI implementations (mvapich2 - bug 463188).
+- [ ] Use eselect template, like modulefile template, instead of in seperated package file diretories like `sys-cluster/hpl`/files.
+- [ ] Use env.d to manage user environment like empi does.
+- [ ] Use alternative solution instead of \$MPIHOME in modulefiles to represent status of module loadings.
+- [ ] Add support for "fullly switch" for user environment. For example, switching from mpich to openmpi should work for both MPI implementation and packages depending on it.
+- [ ] Add cases for multilib installation in mpi-r1 and test for them.
+- [ ] Add default MPI implementation in mpi-r1.
+- [ ] Add new package for testing installation phases, especially `emake install`, and add support for more install functions like `mpi_dobin` and `mpi_dolib`.
+- [ ] .modulespath conflict while emerging sys-cluster/gentoo-mpi.
+- [ ] Add API docs to documentation if neccesary.
+- [ ] Add source copy function in mpi-r1 to enable source copying in prepare phase.
