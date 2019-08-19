@@ -32,7 +32,7 @@ eselect mpi list
 ## TODO List
 
 The core functionality (e.g. parallel install of openmpi, mpich and
-hpl using either or both of them) should work, however, there are some tasks to improve the project:
+hpl using either or both of them) should work, however, there are some tasks to improve the framework:
 
 - [x] Add support for all MPI implementations (mvapich2 - bug 463188).
 - [ ] Use eselect template, like modulefile template, instead of in seperated package file diretories like `sys-cluster/hpl`/files.
