@@ -1,0 +1,9 @@
+# Copyright 1999-2019 Gentoo Authors.
+# Distributed under the terms of the GNU General Public License v2
+
+# This file contains descriptions of MPI_TARGETS USE_EXPAND flags.
+
+openmpi - Build with OpenMPI
+mpich - Build with MPICH
+mpich2 - Build with MPICH2
+mvapich2 - Build with MVAPICH2
