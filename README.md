@@ -87,7 +87,7 @@ Fix issues, polish documentation, and other miscellaneous jobs.
 The core functionality (e.g. parallel install of openmpi, mpich and
 hpl using either or both of them) should work, however, there are some tasks to improve the framework:
 
-- [x] Add support for all MPI implementations (mvapich2 - bug 463188).
+- [ ] mvapich2 cannot be installed - bug 463188.
 - [ ] Use eselect template, like modulefile template, instead of in seperated package file diretories like `sys-cluster/hpl`/files.
 - [ ] Use env.d to manage user environment like empi does.
 - [ ] Use alternative solution instead of \$MPIHOME in modulefiles to represent status of module loadings.
