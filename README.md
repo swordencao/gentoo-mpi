@@ -95,7 +95,7 @@ hpl using either or both of them) should work, however, there are some tasks to 
 - [ ] Add cases for multilib installation in mpi-r1 and test for them.
 - [ ] Add default MPI implementation in mpi-r1.
 - [ ] Add new package for testing installation phases, especially `emake install`, and add support for more install functions like `mpi_dobin` and `mpi_dolib`.
-- [ ] .modulespath conflict while emerging sys-cluster/gentoo-mpi.
+- [x] .modulespath conflict while emerging sys-cluster/gentoo-mpi.
 - [ ] Add API docs to documentation if neccesary.
 - [ ] Add source copy function in mpi-r1 to enable source copying in prepare phase.
 
