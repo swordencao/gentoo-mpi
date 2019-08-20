@@ -33,19 +33,21 @@ eselect mpi list
 
 * Week 1 (5.27 - 6.2)
 
-This week I created an overlay repository and wrote MPI and MPI-based packages (for example, hpl) module files. Based on setting up a virtual environment, they worked as expected. During this period, I investigated and tested several things may influence the module files, e.g. run-time environment variables. And I found the MPI_TARGETS is the most important and most time-consuming part over the project.
+1. Created an overlay repository and wrote MPI and MPI-based packages (for example, hpl) module files. Based on setting up a virtual environment, they worked as expected.
+2. Investigated and tested several things may influence the module files, e.g. run-time environment variables.
+3. Found the MPI_TARGETS is the most important and most time-consuming part over the project.
 
 * Week 2 (6.3 - 6.9)
 
-This week I designed and implemented mpi.eselect and a MPI-based package sys-cluster/hpl as an example. These two eselect files can both handle 'list', 'set', 'show' and 'none'. The eselect files basically connect to moduel files' actions directly, which including environment variables operations mostly. So users are able to use eselect directly without 'module' command (actually 'module' works but it is not necessary).
+Designed and implemented mpi.eselect and a MPI-based package `sys-cluster/hpl` as an example. These two eselect files can both handle 'list', 'set', 'show' and 'none'. The eselect files basically connect to moduel files' actions directly, which including environment variables operations mostly. So users are able to use eselect directly without 'module' command (actually 'module' works but it is not necessary).
 
 * Week 3-4 (6.10 - 6.23)
 
-For the recent two weeks, I implemented gentoo-mpi and mpi-provider.eclass basically. More detailed, the modulefiles and eselect files which were done in the previous weeks are initially installed by gentoo-mpi. mpi-provider facilitates MPI packages to modify these files specifically.
+Implemented gentoo-mpi and mpi-provider.eclass basically. More detailed, the modulefiles and eselect files which were done in the previous weeks are initially installed by gentoo-mpi. mpi-provider facilitates MPI packages to modify these files specifically.
 
 * Week 5-6 (6.24 - 7.7)
 
-These two weeks I used some of buffer time, however the basic goal for MPI-Provider is finished:
+The basic goal for MPI-Provider is finished:
 
 1. Multiple MPI packages (mpich-3.3, openmpi-4.0.1 are tested) could be installed together on the same system without conflict, with the help of mpi-provider.eclass. There are four main types of paths to maintain - libpath, binpath, incpath and manpath.
 2. Refactor modulefiles in order to use specific fixed MPI paths rather than modifying by sed.
