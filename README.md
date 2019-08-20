@@ -4,9 +4,9 @@
 
 **Note: this entire repository is fully dedicated for the GSoC Gentoo MPI project.**
 
-There are numerous MPI implementations in the Gentoo portage tree and far more in general, but most of them can't be installed together as is. The only way to do this now is by using empi from the science overlay and empi has its shortcomings such as lack of multilib support and was not ported to the main tree.
+There are numerous MPI implementations in the Gentoo portage tree and far more in general, but most of them can't be installed together as is. The only way to do this now is by using empi \[1\] from the science overlay and empi has its shortcomings such as lack of multilib support and was not ported to the main tree.
 
-Based on the ideas of python-r1, a new MPI framework ported from existing MPI applications is introduced to enable Gentoo to use multiple MPI versions and relevant packages depending on them (for example, HPL). The gentoo-mpi framework is mainly based on ‘Modules’ package together with Gentoo Prefix technique for detecting, choosing or manipulating MPI environment. Also, an mpi-r1.eclass is introduced and the packages can still be emerged normally onto the system without any trace of mpi-r1.eclass being used. The approach also enables users to easily work with different implementations at the same time without any special privileges. In order to solve the defect that empi does not support multilib, the new framework also adds support for allowing the environment to be configured and installed into different places among different architectures (amd64, x86 etc.), which is handled by using mpi-provider.eclass.
+Based on the ideas of python-r1 \[2\], a new MPI framework ported from existing MPI applications is introduced to enable Gentoo to use multiple MPI versions and relevant packages depending on them (for example, HPL). The gentoo-mpi framework is mainly based on ‘Modules’ package together with Gentoo Prefix \[3\] technique for detecting, choosing or manipulating MPI environment. Also, an mpi-r1.eclass is introduced and the packages can still be emerged normally onto the system without any trace of mpi-r1.eclass being used. The approach also enables users to easily work with different implementations at the same time without any special privileges. In order to solve the defect that empi does not support multilib \[4\], the new framework also adds support for allowing the environment to be configured and installed into different places among different architectures (amd64, x86 etc.), which is handled by using mpi-provider.eclass.
 
 ## Quick Start
 
@@ -98,6 +98,13 @@ hpl using either or both of them) should work, however, there are some tasks to 
 - [x] .modulespath conflict while emerging sys-cluster/gentoo-mpi.
 - [ ] Add API docs to documentation if neccesary.
 - [ ] Add source copy function in mpi-r1 to enable source copying in prepare phase.
+
+## Reference
+
+\[1\] empi, https://wiki.gentoo.org/wiki/Empi  
+\[2\] python-r1, https://wiki.gentoo.org/wiki/Project:Python/python-r1  
+\[3\] Gentoo Prefix, https://wiki.gentoo.org/wiki/Project:Prefix  
+\[4\] multilib, https://wiki.gentoo.org/wiki/Project:Multilib
 
 ## License
 
