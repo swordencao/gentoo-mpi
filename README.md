@@ -97,7 +97,10 @@ hpl using either or both of them) should work, however, there are some tasks to 
 - [ ] Add new package for testing installation phases, especially `emake install`, and add support for more install functions like `mpi_dobin` and `mpi_dolib`.
 - [x] .modulespath conflict while emerging sys-cluster/gentoo-mpi.
 - [ ] Add API docs to documentation if neccesary.
-- [ ] Add source copy function in mpi-r1 to enable source copying in prepare phase.
+- [ ] Add source copy function in mpi-r1 to enable source copying in prepare phase, and modify relative code in `sys-cluster/hpl`.
+- [ ] Alter modulefile paths of MPI implementations in `sys-cluster/gentoo-mpi` (need to confirm the issue whether exists or not).
+- [ ] Check argument number passing to mpi-provider whether it is 0 or 1, or failing if any other number.
+- [ ] Save/restore states if there are multiple inheritances existing in a single ebuild to use mpi-r1.
 
 ## Reference
 
